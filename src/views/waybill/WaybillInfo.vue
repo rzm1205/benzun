@@ -361,7 +361,7 @@ export default {
          confirmButtonText:'确定'
       }).then(() => {
         //付款方法
-        this.confirmPay(id);
+        this.confirmPay();
         // on confirm
       }).catch(() => {
         console.log('点击了取消');
@@ -385,16 +385,15 @@ export default {
            }
         }
       })
-      console.log("付款");
     },
     //签收确认框
-    receiptDialog(id) {
+    receiptDialog() {
       this.$dialog.confirm({
         message: '确定要签收该代运单吗？',
          confirmButtonText:'确定'
       }).then(() => {
         //签收方法
-        this.confirmReceipt(id);
+        this.confirmReceipt();
         // on confirm
       }).catch(() => {
         console.log('点击了取消');

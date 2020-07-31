@@ -38,7 +38,9 @@ export default {
       value:'',
       current:'',//当前页,默认1
       size:'',//每页记录数，默认10
-      pageInfo:{},
+      pageInfo:{
+        dataList:[]
+      },
       loading: false,//列表加载
       finished: false//是否还有数据
     }

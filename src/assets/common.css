@@ -1,0 +1,7 @@
+#app{
+    min-width: 320px;/*最小尺寸*/
+    max-width: 640px;/*最大尺寸*/
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+  }

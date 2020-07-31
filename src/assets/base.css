@@ -1,0 +1,1090 @@
+/*引入nomalize.css*/
+/* @import "./normalize.css"; */
+
+/*:root -> 获取根元素html*/
+/* :root {
+  --color-text: #666;
+  --color-high-text: #ff5777;
+  --color-tint: #ff8198;
+  --color-background: #fff;
+  --font-size: 14px;
+  --line-height: 1.5;
+} */
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html{
+	width: 100%;
+	height: 100%;
+	overflow-x:hidden; 
+  overflow-y:auto;
+}
+body{
+  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+  /* user-select: none; 禁止用户鼠标在页面上选中文字/图片等 */
+  -webkit-tap-highlight-color: transparent; /* webkit是苹果浏览器引擎，tap点击，highlight背景高亮，color颜色，颜色用数值调节 */
+  /* background: var(--color-background); */
+  /* color: var(--color-text); */
+  /* rem vw/vh */
+  /* max-width: 750px; */
+  width: 100vw;
+  min-height: 100%;
+  height: auto;
+}
+
+a {
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+em {
+  font-style: normal;
+}
+.clear-fix::after {
+  clear: both;
+  content: '';
+  display: block;
+  width: 0;
+  height: 0;
+  visibility: hidden;
+}
+.clear-fix {
+  zoom: 1;
+}
+::-webkit-input-placeholder{
+  font-size:14px;
+  font-family:PingFangSC-Regular,PingFang SC;
+  font-weight:400;
+  color:rgba(153,153,153,1) !important;
+}
+input::-webkit-input-placeholder {
+/* WebKit browsers */
+  font-size:14px;
+  font-family:PingFangSC-Regular,PingFang SC;
+  font-weight:400;
+  color:rgba(153,153,153,1) !important;
+}
+input:-moz-placeholder {
+/* Mozilla Firefox 4 to 18 */
+  font-size:14px;
+  font-family:PingFangSC-Regular,PingFang SC;
+  font-weight:400;
+  color:rgba(153,153,153,1) !important;
+}
+input::-moz-placeholder {
+/* Mozilla Firefox 19+ */
+  font-size:14px;
+  font-family:PingFangSC-Regular,PingFang SC;
+  font-weight:400;
+  color:rgba(153,153,153,1) !important;
+}
+input:-ms-input-placeholder {
+/* Internet Explorer 10+ */
+  font-size:14px;
+  font-family:PingFangSC-Regular,PingFang SC;
+  font-weight:400;
+  color:rgba(153,153,153,1) !important;
+}
+/* 更改vant原生样式 源码 */
+.header .van-nav-bar__title{
+  color: #333333;
+  font-size:17px;
+  font-family:PingFangSC-Medium,PingFang SC;
+  font-weight:500;
+}
+.header .van-nav-bar__left{
+  font-size:15px;
+  left: -8px;
+  font-family:PingFangSC-Medium,PingFang SC;
+  font-weight:500;
+  color:#333333;
+}
+.header .van-nav-bar .van-icon{
+  color: #333333;
+  font-size: 20px;
+}
+.form_Info .van-cell{
+  line-height: 0.82rem;
+  padding: 0.26667rem 0;
+}
+.register_form .van-cell{
+  padding: 0.26667rem 0.2rem;
+}
+.addWaybillInfo .van-cell{
+  padding: 0.26667rem 15px;
+}
+.addWaybillInfo .van-field__label{
+  color: #333333;
+}
+.van-cell--required::before{
+  left: 0;
+  top: 0.33rem;
+}
+.addWaybillInfo .van-cell--required::before{
+  left: 8px;
+  top: 0.33rem;
+}
+.van-cell::after{
+  border-bottom: 1px solid #E6E6E6;
+  left: 0;
+}
+.profile_menu .van-cell--large{
+  padding:13px 0;
+}
+.profile_menu .van-cell__right-icon{
+  margin-right: 12px;
+  color: #CCCCCC;
+}
+.form_Info .van-field__control{
+  font-size:14px;
+  height: 30px;
+  font-family:PingFangSC-Medium,PingFang SC;
+  font-weight:500;
+  color:#333333;
+}
+.form_Info .van-button__text{
+  font-size:15px;
+  font-family:PingFangSC-Medium,PingFang SC;
+  font-weight:500;
+  color:#FFFFFF;
+}
+.form_sumit .van-button--info{
+  background-color: rgba(246,143,33,0.4);
+  border: none;
+}
+.form_sumit .van-button--info.validate_activeBtn{
+  background-color: #F68F21;
+  border: none;
+}
+.van-nav-bar--fixed{
+  height: 44px;
+}
+.psd_form .van-field__control{
+  font-size:15px;
+  font-family:PingFangSC-Regular,PingFang SC;
+  font-weight:400;
+  color:#333333;
+}
+/* .waybill_main .van-tab{
+  font-size:15px;
+  font-family:PingFangSC-Regular,PingFang SC;
+  font-weight:400;
+  color:#333333;
+}
+.waybill_main .van-tab--active{
+  font-size:15px;
+  font-family:PingFangSC-Medium,PingFang SC;
+  font-weight:500;
+  color:#F68F21;
+}
+.waybill_main .van-tabs__line{
+  width:25px !important;
+  height:6px;
+  background:#F68F21;
+  border-radius:3px;
+}
+.waybill_main .van-tabs--line .van-tabs__wrap{
+  height: 45px;
+} */
+/* 公共样式 */
+/* 启动页 */
+.header{
+  width: 100%;
+  height: auto;
+  z-index:99999999 ;
+}
+.footer{
+  width: 100%;
+  height: 37px;
+  line-height: 37px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  background: #555555;
+  text-align: center;
+}
+.footer .markInfo{
+  margin-top: 5px;
+}
+.footer div{
+  font-size:12px;
+  transform: scale(0.8);
+  -moz-transform: scale(0.8);
+  -ms-transform: scale(0.8);
+  -webkit-transform:scale(0.8);
+  font-family:PingFangSC-Medium,PingFang SC;
+  font-weight:500;
+  color:#CCCCCC;
+  line-height:12px;
+  margin-top: 2px;
+}
+.main_start{
+  width: 100%;
+  height: 100%;
+  background: #ffffff;
+  overflow: hidden;
+}
+.start_logo{
+  width: 113px;
+  height: 113px;
+  margin: 0 auto;
+  padding-top: 160px;
+}
+.start_logo img{
+  vertical-align: middle;
+  width: 100%;
+}
+.start_headline{
+  width: 100%;
+  margin: 0 auto;
+  padding-top: 312px;
+  text-align:center;
+}
+.start_headline h4{
+  font-size:26px;
+  font-family:FZLTCHJW--GB1-0,FZLTCHJW--GB1;
+  font-weight:bold;
+  color:#F76E1C;
+}
+.start_headline div{
+  font-family:FZLTXHJW--GB1-0,FZLTXHJW--GB1;
+  font-weight:normal;
+  color:#333333;
+  letter-spacing:2px;
+  margin-top: 10px;
+}
+/* 登录页 */
+.form_Info{
+  width: 100%;
+  padding: 0 14px;
+}
+.form_title{
+  font-size:26px;
+  font-family:PingFangSC-Medium,PingFang SC;
+  font-weight:500;
+  color:#333333;
+  padding:0 27px;
+  margin-top: 60px;
+}
+.form_Info form{
+  padding:0 28px;
+  margin-top: 20px;
+}
+.form_sumit{
+  margin-top: 58px;
+}
+.registAndForgets{
+  padding:10px 28px;
+  display: flex;
+  display: -webkit-flex;
+  display: -ms-flex;
+  display: -moz-flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size:15px;
+  font-family:PingFangSC-Regular,PingFang SC;
+  font-weight:400;
+  color:#333333;
+}
+/* 首页大框架 */
+.main{
+  width: 100%;
+  height: 100%;
+  background:#F2F2F2;
+}
+.home_bar{
+  position: fixed;
+  top: 44px;
+  left: 0;
+  width: 100%;
+  height:50px;
+  display: flex;
+  display: -webkit-flex;
+  display: -ms-flex;
+  display: -moz-flex;
+  align-items: center;
+  /* justify-content: space-around; */
+  background:linear-gradient(239deg,rgba(245,166,35,1) 0%,rgba(247,107,28,1) 100%);
+  z-index: 9;
+}
+.home_btn{
+  padding: 0 14px;
+  height: 100%;
+  border-right: 1px solid #FFFFFF;
+  display: flex;
+  display: -webkit-flex;
+  display: -ms-flex;
+  display: -moz-flex;
+  align-items: center;
+}
+.home_btn img{
+  width: 22px;
+  height: 22px;
+  vertical-align: middle;
+  /* margin-top: 12px; */
+}
+.home_logo{
+  padding-left: 14px;
+  display: flex;
+  display: -webkit-flex;
+  display: -ms-flex;
+  display: -moz-flex;
+  align-items: center;
+}
+.home_logo img{
+  width:88px;
+  height: 33px;
+  vertical-align: middle;
+  /* margin-top: 6px; */
+}
+.popUp_bar{
+  height: 100%;
+}
+/* .popUp_bar .van-popup{
+  height: 100%;
+} */
+.profile_user{
+  width: 100%;
+  height: auto;
+  text-align: center;
+  padding-bottom: 44px;
+}
+.profile_user img{
+  width: 66px;
+  height: 66px;
+  vertical-align: middle;
+  margin-top: 38px;
+}
+.profile_user .profile_name{
+  font-size:13px;
+  font-family:PingFangSC-Semibold,PingFang SC;
+  font-weight:600;
+  color:#333333;
+  margin-top: 26px;
+}
+.profile_menu{
+  border-top:1px solid #E6E6E6; 
+}
+.profile_menu img{
+  width: 15px;
+  vertical-align: middle;
+  margin-left: 16px;
+  margin-right: 10px;
+  margin-top: -2px;
+}
+.profile_menu .custom-title{
+  font-size:14px;
+  font-family:PingFangSC-Medium,PingFang SC;
+  font-weight:500;
+  color:#666666;
+}
+.quit_btn{
+  margin: 0 14px;
+  margin-top: 87px;
+  padding-bottom: 19px;
+}
+/* 通知公告，推广链接 */
+.search_notice .van-search{
+  padding: 10px 15px;
+}
+.search_notice .van-field__left-icon{
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.search_notice .van-field__left-icon img{
+  width: 22px;
+  height: 22px;
+  vertical-align: middle;
+  margin-top: -2px;
+}
+.search_notice  .van-search__content{
+  border-radius:16px; 
+}
+.notice_box{
+  width: 100%;
+  height: 100%;
+  background: #ffffff;
+  margin-top: 9px;
+  overflow: hidden;
+  overflow-y: auto;
+  padding-bottom: 150px;
+}
+.notice_list{
+  padding: 11px 15px;
+}
+.notice_list .van-cell__value{
+  display: flex;
+  display: -webkit-flex;
+  display: -ms-flex;
+  display: -moz-flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.notice_list .notice_title{
+  font-size:15px;
+  font-family:PingFangSC-Semibold,PingFang SC;
+  font-weight:600;
+  color:#333333;
+}
+.notice_list .notice_time{
+  font-size:14px;
+  font-family:PingFangSC-Regular,PingFang SC;
+  font-weight:400;
+  columns: #999999;
+}
+.main_notice{
+  background: #ffffff;
+  margin: 10px 14px;
+  border-radius: 4px;
+  padding: 15px 20px;
+  text-align: center;
+}
+.main_notice header{
+  font-size:20px;
+  font-family:PingFangSC-Semibold,PingFang SC;
+  font-weight:600;
+  color:#333333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ball{
+  display: inline-block;
+  width: 11px;
+  height: 11px;
+  background: #ffffff;
+  border:3px solid rgba(246,143,33,1);
+  border-radius: 50%;
+}
+.ball1{
+  margin-right: 18px;
+}
+.ball2{
+  margin-left: 18px;
+}
+.notice_con{
+  text-align: left;
+  font-size:15px;
+  font-family:PingFangSC-Semibold,PingFang SC;
+  font-weight:600;
+  color:#333333;
+  line-height:22px;
+  margin-top: 24px;
+  padding: 0 8px;
+}
+.link_copy{
+  font-size:16px;
+  font-family:PingFangSC-Semibold,PingFang SC;
+  font-weight:600;
+  color:#F68F21;
+  margin-top: 56px;
+}
+.link_btn{
+  margin-top: 20px;
+  margin-bottom: 8px;
+}
+/* 修改密码页 */
+.modifyPSD{
+  width: 100%;
+}
+.psd_title{
+  display: flex;
+  display: -webkit-flex;
+  display: -ms-flex;
+  display: -moz-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 120px;
+  background: url(../assets/images/main/bg.png) no-repeat;
+  background-size:100% 100%;
+}
+.psd_title span{
+  text-align: center;
+  font-size:20px;
+  font-family:PingFangSC-Semibold,PingFang SC;
+  font-weight:600;
+  color:#ffffff;
+}
+.psd_submit{
+  margin: 20px 15px;
+  margin-top: 20px;
+}
+/* 我的钱包页 */
+.wallet_top{
+  width: 100%;
+  height: 167px;
+  padding: 15px;
+  background: #ffffff;
+  box-shadow:0px 3px 4px 0px rgba(204,204,204,0.1);
+}
+.wallet_bg{
+  width: 345px;
+  height: 137px;
+  background: url(../assets/images/main/wallet_bg.png) no-repeat;
+  background-size: 100% 100%;
+  display: flex;
+  display: -webkit-flex;
+  display: -ms-flex;
+  display: -moz-flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 33px 30px;
+}
+.wallet_name{
+  font-size:20px;
+  font-family:PingFangSC-Semibold,PingFang SC;
+  font-weight:600;
+  color:#FFFFFF;
+}
+.wallet_money{
+  font-size:14px;
+  font-family:PingFangSC-Regular,PingFang SC;
+  font-weight:400;
+  color:#FFFFFF;
+  margin-top: 8px;
+}
+.wallet_title_left font{
+  margin-left: 7px;
+}
+.wallet_title_right{
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+}
+.wallet_title_right img{
+  width: 100%;
+  vertical-align: middle;
+}
+.wallet_main h4{
+  text-align: center;
+  padding: 10px 0;
+}
+.wallet_record{
+  width: 100%;
+  padding: 0 15px;
+  height: auto;
+}
+.wallet_record{
+  width: 100%;
+  height: auto;
+}
+.wallet_list{
+  width: 100%;
+  background: #ffffff;
+  border-radius: 3px;
+  border-left: 4px solid #F68F21;
+  padding: 13px 14px;
+  margin-bottom: 10px;
+}
+.wallet_order{
+  display: flex;
+  display: -webkit-flex;
+  display: -ms-flex;
+  display: -moz-flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size:16px;
+  font-family:PingFangSC-Medium,PingFang SC;
+  font-weight:500;
+  color:#333333;
+}
+.record_money{
+  font-size:16px;
+  font-family:PingFangSC-Medium,PingFang SC;
+  font-weight:500;
+  color:#F68F21;
+}
+.record_time{
+  font-size:12px;
+  font-family:PingFangSC-Regular,PingFang SC;
+  font-weight:400;
+  color:#666666;
+  margin-top: 4px;
+}
+.record_name font,.record_time font{
+  margin-left: 4px;
+}
+/* 我的代运单页待付款、运输中、已完成 */
+.waybill_main{
+  width: 100%;
+  height: 100%;
+  /* height: calc(100% - 140px); */
+  overflow: hidden;
+  overflow-y: auto;
+  padding-bottom: 50px;
+}
+.waybill_main .waybill_tab{
+  width: 100%;
+  height: 45px;
+  background: #ffffff;
+  box-shadow:0px 1px 0px 0px rgba(230,230,230,1),0px 1px 0px 0px rgba(230,230,230,1);
+  display: flex;
+  display: -webkit-flex;
+  display: -ms-flex;
+  display: -moz-flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  left: 0;
+}
+.waybill_tab div{
+  text-align: center;
+  font-size:15px;
+  font-family:PingFangSC-Regular,PingFang SC;
+  font-weight:400;
+  color:#333333;
+  flex: 1;
+}
+.waybill_tab .active_tab{
+  color: #F68F21;
+}
+.active_tab:after{
+  content:"  ";
+  display:block;
+  width: 25px;
+  position: absolute;
+  bottom: 0;
+  /* left: 0; */
+  z-index: 1;
+  height: 6px;
+  background-color: #F68F21;
+  border-radius: 3px;
+  transform: translateX(46px) translateX(-50%);
+  transition-duration: 0.3s;
+}
+/* .waybill_main .van-tabs__content{
+  width: 100%;
+  z-index: 0;
+} */
+.waybill_box{
+  width: 100%;
+  padding: 0 15px;
+  padding-top: 45px;
+}
+.waybill_list{
+  background: #ffffff;
+  margin-top: 10px;
+  border-radius:4px;
+}
+.waybill_title{
+  border-bottom: 1px dashed #E6E6E6;
+  font-size:14px;
+  font-family:PingFangSC-Medium,PingFang SC;
+  font-weight:500;
+  color:#333333;
+  padding: 13px 0;
+  background: url(../assets/images/main/waybill_title_line.png) no-repeat;
+  background-position:left center; 
+  background-size:6px 25px;
+  padding-left: 16px;
+}
+.waybill_title font{
+  margin-left: 4px;
+}
+.waybill_con{
+  padding: 0 13px;
+}
+.waybill_process{
+  background:url(../assets/images/main/waybillProcess.png) no-repeat;
+  background-position: left center;
+  background-size: 7px 41px;
+  padding: 10px 16px 9px 16px;
+}
+.waybill_start{
+  font-size:16px;
+  font-family:PingFangSC-Semibold,PingFang SC;
+  font-weight:600;
+  color:#333333;
+  display: flex;
+  display: -webkit-flex;
+  display: -ms-flex;
+  display: -moz-flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.waybill_start .waybill_start_money{
+  font-size: 14px;
+}
+.waybill_start .waybill_start_money font{
+  font-size: 16px;
+  color: #F68F21;
+}
+.waybill_end{
+  font-size:16px;
+  font-family:PingFangSC-Semibold,PingFang SC;
+  font-weight:600;
+  color:#F68F21;
+  margin-top: 12px;
+}
+.waybill_time{
+  font-size:12px;
+  font-family:PingFangSC-Medium,PingFang SC;
+  font-weight:500;
+  color:#999999;
+  padding: 0 0 11px 16px;
+}
+.waybill_time font{
+  margin-left: 4px;
+}
+.waybill_view{
+  width: 100%;
+  display: flex;
+  display: -webkit-flex;
+  display: -ms-flex;
+  display: -moz-flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 10px;
+}
+.waybill_view span{
+  display: inline-block;
+  padding: 5px 14px;
+  background:rgba(255,255,255,1);
+  border-radius:13px;
+  border:1px solid rgba(204,204,204,1);
+  cursor: pointer;
+  font-size:13px;
+  font-family:PingFangSC-Regular,PingFang SC;
+  font-weight:400;
+  color:#999999;
+  line-height:18px;
+}
+.waybill_view .waybill_router{
+  margin-right: 10px;
+}
+/* 代运单详情页-待付款、运输中、已完成 */
+.waybillInfo_main{
+  width: 100%;
+  height: 100%;
+  padding-bottom: 40px;
+  overflow: hidden;
+  overflow-y: auto;
+}
+.waybillInfo_main .waybillInfo_header{
+  display: flex;
+  display: -webkit-flex;
+  display: -ms-flex;
+  display: -moz-flex;
+  padding: 0 30px;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.waybillInfo_name{
+  padding-top: 19px;
+}
+.waybillInfo_name h4{
+  font-size:20px;
+  font-style: normal;
+  font-family:PingFangSC-Medium,PingFang SC;
+  font-weight:500;
+  color:#FFFFFF;
+  margin-bottom: 5px;
+}
+.waybillInfo_order,
+.waybillInfo_waybill{
+  font-size:14px;
+  font-family:PingFangSC-Medium,PingFang SC;
+  font-weight:500;
+  color:#FFFFFF;
+  margin-bottom: 4px;
+}
+.waybillInfo_order span,
+.waybillInfo_waybill span{
+  font-size:14px;
+}
+.waybillInfo_order font,
+.waybillInfo_waybill font{
+  margin-left: 4px;
+}
+.waybillInfo_shalou{
+  width: 40px;
+  height: 50px;
+  padding-top: 22px;
+}
+.waybillInfo_fukuan{
+  width: 52px;
+  height: 50px;
+  padding-top: 22px;
+}
+.waybillInfo_yunshu{
+  width: 50px;
+  height: 47px;
+  padding-top: 24px;
+}
+.waybillInfo_complete{
+  width: 50px;
+  height: 50px;
+  padding-top: 22px;
+}
+.waybillInfo_shalou img,
+.waybillInfo_yunshu img,
+.waybillInfo_complete img{
+  width: 100%;
+  vertical-align: middle;
+}
+.receiverInfo{
+  margin: 10px 15px;
+  margin-top: -28px;
+  background: #ffffff;
+  border-radius:4px;
+}
+.receiver_header{
+  display: flex;
+  display: -webkit-flex;
+  display: -ms-flex;
+  display: -moz-flex;
+  justify-content: space-between;
+  font-size:15px;
+  font-family:PingFangSC-Semibold,PingFang SC;
+  font-weight:600;
+  color:rgba(51,51,51,1);
+  padding: 17px 15px 10px 15px;
+}
+.receiver_name img{
+  display: inline-block;
+  width: 13px;
+  height: 16px;
+  vertical-align: middle;
+  margin-top: -2px;
+}
+.receiver_name span{
+  margin-left: 5px;
+}
+.receiver_name font{
+  margin-left: 4px;
+}
+.receiver_detail{
+  padding: 0 33px;
+  font-size:12px;
+  font-family:PingFangSC-Medium,PingFang SC;
+  font-weight:500;
+  color:#999999;
+  padding-bottom: 14px;
+}
+.receiver_mode,
+.receiver_address
+{
+  display: flex;
+  display: -webkit-flex;
+  display: -ms-flex;
+  display: -moz-flex;
+  justify-content: space-between;
+  padding: 2px 0;
+}
+.receiver_mode div{
+  width: 50%;
+}
+.receiver_mode font{
+  margin-left: 4px;
+}
+.receiver_address{
+  width: 100%;
+}
+.receiver_address div{
+  width: 100%;
+  height: auto;
+  display: flex;
+  display: -webkit-flex;
+  display: -ms-flex;
+  display: -moz-flex;
+  justify-content: space-between;
+}
+.receiver_address div span{
+  display: inline-block;
+  width: 55px;
+}
+.receiver_address div font{
+  display: inline-block;
+  width: calc(100% - 55px);
+  /* margin-left: 4px; */
+  word-wrap:break-word;
+}
+/* 针对320屏幕小手机的时候，防止字体大跑偏 */
+@media screen and (max-width: 330px) {
+  .receiver_detail{
+    font-size:12px;
+    transform: scale(0.9);
+    -moz-transform: scale(0.);
+    -ms-transform: scale(0.9);
+    -webkit-transform:scale(0.9);
+    padding: 0 20px;
+  }
+  .receiver_address div span{
+    width: 68px;
+  }
+}
+.waybillInfo_main .form_sumit{
+  margin: 10px 65px;
+}
+.waybillInfo_main .van-icon-plus::before{
+  font-weight: 900;
+}
+.waybillInfo_box{
+  width: 100%;
+  padding: 0 15px;
+}
+.waybillInfo_detail{
+  padding:10px 16px;
+}
+.waybillInfo_list{
+  position: relative;
+}
+.waybillInfo_state{
+  width: 60px;
+  height: 20px;
+  position: absolute;
+  right: 15px;
+  top: 13px;
+}
+.waybillInfo_state img{
+  width: 100%;
+  vertical-align: middle;
+}
+.expressInfo a,
+.forgetPsd a{
+  text-decoration:underline ;
+}
+.expressInfo .active_img,
+.forgetPsd .active_img{
+  color: #F68F21;
+}
+.express_deleteBtn{
+  position: absolute;
+  right:15px;
+  bottom: 11px;
+}
+.express_deleteBtn span{
+  display: inline-block;
+  padding: 4px 17px;
+  background:#ffffff;
+  border-radius:13px;
+  border:1px solid #F68F21;
+  font-size:13px;
+  font-family:PingFangSC-Regular,PingFang SC;
+  font-weight:400;
+  color:#F68F21;
+}
+
+.waybillInfo_pay{
+  position: fixed;
+  bottom: 37px;
+  left: 0;
+  width: 100%;
+  height:auto;
+  background:rgba(255,255,255,1);
+  box-shadow:0px -2px 5px 0px rgba(74,74,74,0.1);
+  text-align: center;
+  z-index: 9;
+}
+.payInfo_money{
+  font-size:14px;
+  font-family:PingFangSC-Medium,PingFang SC;
+  font-weight:500;
+  color:#333333;
+  padding: 12px 0;
+}
+.payInfo_money font{
+  font-size:16px;
+  color: #F68F21;
+  margin-left: 6px;
+}
+.payInfo_sumit{
+  display: flex;
+  display: -webkit-flex;
+  display: -ms-flex;
+  display: -moz-flex;
+  justify-content: space-around;
+  /* padding: 8px 0 12px 0; */
+  padding: 12px 0;
+}
+.payInfo_sumit .form_sumit{
+  width: 130px;
+  height: 35px;
+  margin: 0;
+}
+.payInfo_sumit .form_sumit .van-button{
+  height: 35px;
+}
+.payInfo_sumit .form_sumit .van-button--default{
+  border: 1px solid #E6E6E6;
+  color: #999999;
+  font-size:16px;
+  /* font-family:PingFangSC-Medium,PingFang SC; */
+  font-weight:500;
+}
+/* .payInfo_sumit .form_sumit .van-button__text{
+  font-size:16px;
+  font-family:PingFangSC-Medium,PingFang SC;
+  font-weight:500;
+} */
+.waybillInfo_receive .payInfo_sumit{
+  padding: 13px 0;
+  align-items: center;
+}
+.receive_tips{
+  font-size:14px;
+  font-family:PingFangSC-Medium,PingFang SC;
+  font-weight:500;
+  color:#D0021B;
+}
+/* 创建代运单页 */
+.addWaybillInfo_main{
+  width: 100%;
+  height: 100%;
+  padding-bottom: 300px;
+  overflow: hidden;
+  overflow-y:auto; 
+}
+.addWaybillInfo_main .form_sumit.addExpress{
+  margin: 10px 65px;
+}
+.address_box{
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  overflow-y:auto; 
+}
+.address_list{
+  margin: 10px 15px;
+  background:rgba(255,255,255,1);
+  box-shadow:0px 0px 8px 0px rgba(0,0,0,0.15);
+  border-radius:4px;
+  padding: 10px 10px;
+}
+.address_list.active{
+  border:1px solid rgba(246,143,33,1);
+}
+.address_title {
+  font-size:15px;
+  font-family:PingFangSC-Semibold,PingFang SC;
+  font-weight:600;
+  color:#333333;
+  padding: 5px 0;
+}
+.address_name {
+  margin-left: 4px;
+}
+.address_phone{
+  margin-left: 12px;
+}
+.address_detail{
+  font-size:12px;
+  font-family:PingFangSC-Medium,PingFang SC;
+  font-weight:500;
+  color:#999999;
+  padding: 0 0 5px 25px;
+}
+.address_dialog .van-dialog__header{
+  padding: 20px 0 10px 0;
+}
+.address_title img{
+  width: 14px;
+  height: 14px;
+  vertical-align: middle;
+}

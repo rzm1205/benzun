@@ -1,0 +1,16 @@
+{
+  "id": "1935790",
+  "name": "中铁二期",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "5022863",
+      "name": "验证码",
+      "font_class": "yanzhengma",
+      "unicode": "e623",
+      "unicode_decimal": 58915
+    }
+  ]
+}

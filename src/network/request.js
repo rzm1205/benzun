@@ -30,13 +30,19 @@ export function request(config) {
   instance.interceptors.request.use(config => {
     //拦截后需要将拦截下来的请求数据返回发送
     let token = localStorage.getItem('token');
-      if (token) { // 每次发送请求之前判断是否存在token，如果存在，则统一在http请求的header都加上token，不用每次请求都手动添加了
-        config.headers['token'] = token;
-        //请求头里加langType语言，中文cn，英文my
-        config.headers['langType'] = 'cn';
-       // 每个请求接口都需要往formData上，加_token
-      //  config.data._token_iben = token
+    let langType = localStorage.getItem('langType');
+    if (token) { // 每次发送请求之前判断是否存在token，如果存在，则统一在http请求的header都加上token，不用每次请求都手动添加了
+      config.headers['token'] = token;
+      // 每个请求接口都需要往formData上，加_token
+    //  config.data._token_iben = token
+    }
+    if(langType){
+      if(langType === 'en'){
+        langType = 'my';//赋值转换马来西亚文
       }
+        //请求头里加langType语言，中文cn，英文my
+      config.headers['langType'] = langType;
+    }
     return config;
   }, err => {
     console.log(err)

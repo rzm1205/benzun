@@ -20,13 +20,13 @@
                 v-clipboard:success="onCopy"
                 v-clipboard:error="onError"
               >
-                复制链接
+                {{$t('复制链接')}}
               </van-button>
           </div>
       </div>
     </div>
     <div class="main_notice" v-if="!modifyInfo.text">
-      <van-empty description="暂无推广内容" />
+      <van-empty :description="$t('暂无数据')" />
     </div>
   </div>
 </template>
@@ -62,7 +62,7 @@ export default {
     },
     //复制方法
     onCopy: function (e) {
-       this.$toast.success("复制成功");
+       this.$toast.success(this.$t('复制成功'));
        console.log('复制的内容：',e.text);
     },
     onError: function (e) {

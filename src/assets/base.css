@@ -170,6 +170,10 @@ input:-ms-input-placeholder {
   font-weight:400;
   color:#333333;
 }
+.van-dialog__confirm, 
+.van-dialog__confirm:active{
+  color: #F68F21;
+}
 /* .waybill_main .van-tab{
   font-size:15px;
   font-family:PingFangSC-Regular,PingFang SC;
@@ -913,11 +917,18 @@ input:-ms-input-placeholder {
     -moz-transform: scale(0.);
     -ms-transform: scale(0.9);
     -webkit-transform:scale(0.9);
-    padding: 0 20px;
+    padding: 10px 0;
+  }
+  .waybillInfo_detail{
+    padding: 10px 0 !important;
+  }
+  .express_deleteBtn{
+    right: 0 !important;
   }
   .receiver_address div span{
     width: 68px;
   }
+  
 }
 .waybillInfo_main .form_sumit{
   margin: 10px 65px;
@@ -1087,4 +1098,22 @@ input:-ms-input-placeholder {
   width: 14px;
   height: 14px;
   vertical-align: middle;
+}
+.ofenAddress_btn{
+  display: inline-block;
+  padding: 0 18px;
+  background:rgba(255,255,255,1);
+  border-radius:13px;
+  border:1px solid #F68F21;
+  font-size:13px;
+  font-family:PingFangSC-Regular,PingFang SC;
+  font-weight:400;
+  color:#F68F21;
+}
+.ofenAddress_btn img{
+  width: 15px;
+  height: 15px;
+  vertical-align: middle;
+  margin-top: -4px;
+  margin-right: 6px;
 }

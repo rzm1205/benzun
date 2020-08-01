@@ -1,39 +1,41 @@
 <template>
   <div class="main_start">
       <div class="form_Info register_form" >
-        <div class="form_title">找回密码</div>
+        <div class="form_title">{{$t('找回密码')}}</div>
         <div class="psd_form">
           <van-form @failed="onFailed"  @submit="onSubmit">
             <van-field
               v-model="username"
               required
-              label="用户名"
+              :label="$t('用户名')"
               name="username"
-              placeholder="请输入用户名"
-              :rules="[{ required: true, message: '请输入用户名' }]"
+              :placeholder="$t('请输入用户名')"
+              :rules="[{ required: true, message: this.$t('请输入用户名') }]"
             />
             <van-field
               v-model="phone"
               required
-              label="手机号"
+              :label="$t('手机号')"
               type="tel"
               name="phone"
-              placeholder="请输入手机号"
-              :rules="[{ required: true, message: '请输入手机号' },
-              { pattern: /^1[3456789]\d{9}$/, message: '手机号码格式错误'}]"
+              :placeholder="$t('请输入手机号')"
+              :rules="[{ required: true, message: this.$t('请输入手机号') },
+              { pattern: /^1[3456789]\d{9}$/, message: this.$t('手机号码格式错误')}]"
             />
             <van-field
               v-model="email"
               required
               type="email"
-              label="邮箱地址"
+              :label="$t('邮箱地址')"
               name="email"
-              placeholder="请输入邮箱地址"
-              :rules="[{ required: true, message: '请输入邮箱地址' }]"
+              :placeholder="$t('请输入邮箱地址')"
+              :rules="[{ required: true, message: $t('请输入邮箱地址') },
+              { pattern: /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/, message: $t('邮箱地址格式错误')}
+              ]"
             />
             <div class="form_sumit">
                 <van-button round block type="info" class="validate_activeBtn"  native-type="submit">
-                  下一步
+                  {{$t('下一步')}}
                 </van-button>
             </div>
           </van-form>

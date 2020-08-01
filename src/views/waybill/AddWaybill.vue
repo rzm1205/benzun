@@ -5,34 +5,35 @@
         <div class="psd_form addWaybillInfo" v-if="showType==='waybill'">
           <van-form @submit="onSubmitWaybill" label-width="2.2rem">
             <van-field
-              readonly
-              clickable
-              is-link 
-              arrow-direction="down" 
-              v-model="address"
-              type="text"
               name="address"
-              label="常用地址"
-              placeholder="请选择"
+              v-model="address" 
+              :label=" $t('常用地址')"
               @click="showAddressDialog = true"
-            />
+            >
+              <template #input v-if="showType==='waybill'">
+               <span class="ofenAddress_btn">
+                <img src="~/assets/images/main/add_sel.png" alt="">
+                 {{ $t('从历史地址簿中选择')}}
+                </span>
+              </template>
+            </van-field>
             <van-field
               v-model="addressee"
               required
               name="addressee"
               type="text"
-              label="收件人"
-              placeholder="请输入"
-              :rules="[{ required: true, message: '请输入收件人' }]"
+              :label="$t('收件人')"
+              :placeholder="$t('请输入')"
+              :rules="[{ required: true, message: $t('请输入收件人')}]"
             />
             <van-field
               v-model="phone"
               required
               name="phone"
               type="tel"
-              label="联系电话"
-              placeholder="请输入"
-              :rules="[{ required: true, message: '请输入联系电话' },{ pattern: /^1[3456789]\d{9}$/, message: '手机号码格式错误'}]"
+              :label="$t('联系电话')"
+              :placeholder="$t('请输入')"
+              :rules="[{ required: true, message: $t('请输入联系电话')},{ pattern: /^1[3456789]\d{9}$/, message: $t('手机号码格式错误')}]"
             />
             <van-field
               readonly
@@ -41,10 +42,10 @@
               is-link 
               arrow-direction="down" 
               type="text"
-              name="trantypeId"
+              name="transtypeId"
               :value="transTypeInfo.text"
-              label="运输方式"
-              placeholder="请选择"
+              :label="$t('运输方式')"
+              :placeholder="$t('请选择')"
               @click="showTranstypeDialog = true"
             />
             <!-- 运输方式列表弹出层 -->
@@ -55,7 +56,7 @@
               <van-picker
                 item-height='45'
                 visible-item-count='4'
-                title="请选择运输方式"
+                :title="$t('运输方式')"
                 show-toolbar
                 :columns="transtypeList_name"
                 @cancel="showTranstypeDialog = false"
@@ -71,8 +72,8 @@
               name="receivareaId"
               :value="receivareaInfo.text"
               type="text"
-              label="收货地区"
-              placeholder="请输入"
+              :label="$t('收货地区')"
+              :placeholder="$t('请输入')"
               @click="showReceivareaDialog = true"
             />
             <!-- 收货地区列表弹出层 -->
@@ -83,7 +84,7 @@
               <van-picker
                 item-height='45'
                 visible-item-count='4'
-                title="请选择收货地区"
+                :title="$t('收货地区')"
                 show-toolbar
                 :columns="receivareaList_name"
                 @cancel="showReceivareaDialog = false"
@@ -95,16 +96,16 @@
               v-model="detailedaddress"
               name="detailedaddress"
               type="text"
-              label="详细地址"
-              placeholder="请输入"
-              :rules="[{ required: true, message: '请输入详细地址' }]"
+              :label="$t('详细地址')"
+              :placeholder="$t('请输入')"
+              :rules="[{ required: true, message: $t('请输入详细地址')}]"
             />
             <van-field
               v-model="postcode"
               name="postcode"
               type="text"
-              label="邮编"
-              placeholder="请输入"
+              :label="$t('邮编')"
+              :placeholder="$t('请输入')"
             />
             <van-field
               v-model="description"
@@ -113,9 +114,9 @@
               autosize
               type="textarea"
               maxlength="100"
-              label="订单备注"
+              :label="$t('订单备注')"
               show-word-limit
-              placeholder="请输入"
+              :placeholder="$t('请输入')"
             />
             <!-- 确认下单 -->
             <div class="waybillInfo_pay">
@@ -128,7 +129,7 @@
                   class="validate_activeBtn" 
                   native-type="submit" 
                   >
-                    确认下单
+                    {{$t('确认下单')}}
                   </van-button>
                 </div>
               </div>
@@ -142,57 +143,58 @@
         icon="plus"
         @click="addExpress"
         >
-          添加快递单
+         {{$t('添加快递单')}}
         </van-button>
       </div>
       <div class="expressInfo_list" v-if="showType==='waybill'">
+        <!-- 快递单列表 -->
         <div class="waybill_list waybillInfo_list"  v-for="(item,index) in expressbillList" :key="index">
           <div class="waybill_title">
-            <span>快递单号:</span>
+            <span>{{$t('快递单号')}}:</span>
             <font>{{item.expressnum}}</font>
             <!-- 待入库的不能查看照片 -->
             <div class="waybillInfo_state">
-              <img v-if="item.curType === 0" src="~/assets/images/main/storage_wait.png" alt="">
-              <img v-if="item.curType != 0" src="~/assets/images/main/storage_already.png" alt="">
+              <!-- <img v-if="item.curType === 0" src="~/assets/images/main/storage_wait.png" alt="">
+              <img v-if="item.curType != 0" src="~/assets/images/main/storage_already.png" alt=""> -->
+              <img  src="~/assets/images/main/order_wait.png" alt="">
             </div>
           </div>
           <div class="receiver_detail waybillInfo_detail"  
             style="padding-bottom:0.64rem;">
             <div class="receiver_mode expressInfo">
               <div>
-                <span>快递公司:</span>
+                <span>{{$t('快递公司')}}:</span>
                 <font>{{item.companyName}}</font>
               </div>
               <div>
-                <span>物品名称:</span>
+                <span>{{$t('物品名称')}}:</span>
                 <font>{{item.name}}</font>
               </div>
             </div>
             <div class="receiver_mode expressInfo">
               <div>
-                <span>物品数量:</span>
+                <span>{{$t('物品数量')}}:</span>
                 <font>{{item.num}}</font>
               </div>
-              <div v-if="item.curType != 0">
+              <div>
                  <!-- 状态是未入库时，不显示查看图片按钮和重量体积，状态是已入库时才显示 -->
                 <span>
                   <a href="javascript:void(0);"
-                  @click.stop="viewImagePreview"
                   >
-                  查看图片
+                  {{$t('查看图片')}}
                   </a>
                   </span>
               </div>
             </div>
             <div class="receiver_mode expressInfo">
-              <div v-if="item.curType != 0">
-                <span>重量体积:</span>
+              <div>
+                <span>{{$t('重量体积')}}:</span>
                 <!-- 后台录入重量体积 -->
                 <font>-</font>
               </div>
             </div>
             <div  class="express_deleteBtn" @click="deleteExpress(index)">
-              <span>删除</span>
+              <span>{{$t('删除')}}</span>
             </div>
           </div>
         </div>
@@ -209,8 +211,8 @@
               :value="companyInfo.text"
               type="text"
               name="companyId"
-              label="快递公司"
-              placeholder="请选择"
+              :label="$t('快递公司')"
+              :placeholder="$t('请选择')"
               @click="showCompanyDialog = true"
             />
             <!-- 快递公司列表弹出层 -->
@@ -221,7 +223,7 @@
               <van-picker
                 item-height='45'
                 visible-item-count='4'
-                title="请选择快递公司"
+                :title="$t('快递公司')"
                 show-toolbar
                 :columns="companyList_name"
                 @cancel="showCompanyDialog = false"
@@ -233,26 +235,27 @@
               required
               name="expressnum"
               type="text"
-              label="快递单号"
-              placeholder="请输入"
+              :label="$t('快递单号')"
+              :placeholder="$t('请输入')"
+              :rules="[{ required: true, message: $t('请输入快递单号')}]"
             />
             <van-field
               v-model="expressInfo.name"
               required
               name="name"
               type="text"
-              label="物品名称"
-              placeholder="请输入"
-              :rules="[{ required: true, message: '请输入物品名称' }]"
+              :label="$t('物品名称')"
+              :placeholder="$t('请输入')"
+              :rules="[{ required: true, message: $t('请输入物品名称')}]"
             />
             <van-field
               v-model="expressInfo.num"
               required
               name="num"
               type="number"
-              label="物品数量"
-              placeholder="请输入"
-              :rules="[{ required: true, type:'number', message: '请输入物品数量' }]"
+              :label="$t('物品数量')"
+              :placeholder="$t('请输入')"
+              :rules="[{ required: true, type:'number', message: $t('请输入物品数量') }]"
             />
             <div class="waybillInfo_pay">
               <div class="payInfo_sumit">
@@ -262,14 +265,14 @@
                   class="validate_activeBtn" 
                   native-type="submit" 
                   >
-                    确认添加
+                   {{ $t('确认添加')}}
                   </van-button>
                 </div>
                 <div class="form_sumit">
                   <van-button round block type="default" 
                   @click="cancelExpress"
                   >
-                    取消
+                     {{ $t('取消')}}
                   </van-button>
                 </div>
               </div>
@@ -282,17 +285,16 @@
       class="address_dialog"
       v-model="showAddressDialog" 
       show-cancel-button 
-      confirm-button-text="确定"
       :beforeClose="confirmAddressMethod">
         <!-- 使用 left-icon 插槽来标题 -->
       <template slot="title">
-        <div class="access_title">历史地址簿</div>
+        <div class="access_title">{{$t('历史地址簿')}}</div>
       </template>
       <div class="address_box">
         <div class="address_list" v-for="(item,index) in addressList" :key="index">
-          <van-radio-group v-model="addressInfo.radio">
+          <van-radio-group v-model="addressInfo">
             <div class="address_title">
-              <van-radio :name="item.receivarea_id">
+              <van-radio :name="item">
                 <template #icon="props">
                   <img class="img-icon" :src="props.checked ? require('@/assets/images/main/radio_sel.png') : require('@/assets/images/main/radio_nor.png')" />
                 </template>
@@ -326,7 +328,7 @@ export default {
       address:'',//
       addressee:'',//收件人
       phone:'',
-      trantypeId:'',//运输方式
+      transtypeId:'',//运输方式
       receivareaId:'',//收货地区
       detailedaddress:'',//详细地址
       postcode:'',//邮编
@@ -356,6 +358,23 @@ export default {
     this.queryDicsList('company');//查询运输公司
   },
   methods:{
+    //收货地区、根据Id返显地区
+    queryloadDicById(id){
+       let params = {
+         id:id
+       };
+      this.$post('/dic/loadDic',params).then(data => {
+        if(data.code === '0') {
+          this.receivareaInfo.text = data.data.text;
+          //将获取到的收货地区，
+          console.log(this.receivareaInfo.text);
+        } else {
+          if(data && data.msg){
+              this.$toast.fail(data.msg);
+           }
+        }
+      })
+    },
     // 查询常用地址
     queryAddressList(userId){
       let params = {
@@ -363,10 +382,10 @@ export default {
       this.$post('/waybill/queryAddrsList', params).then(data => {
         if(data.code === '0') {
            this.addressList = data.dataList;
-           this.addressList.map((item)=>{
-             //手机号中间几位加星号
-             item.phone = starPhone(item.phone);
-           })
+          //  this.addressList.map((item)=>{
+          //    //手机号中间几位加星号
+          //    item.phone = starPhone(item.phone);
+          //  })
         } else {
           if(data && data.msg){
               this.$toast.fail(data.msg);
@@ -377,11 +396,22 @@ export default {
     // 是否关闭常用地址弹框-关闭前的判断
     confirmAddressMethod(action, done) {
       if(action === 'confirm') {
-        // if(!this.addressInfo.radio) {
-        //     this.$toast("请输入内部管理密码")
-        //     done(false) //不关闭弹框
-        //     return
-        // }
+        console.log(this.addressInfo);
+        if(this.addressInfo === undefined || this.addressInfo === '') {
+            this.$toast(this.$t('请选择一条历史地址簿'))
+            done(false) //不关闭弹框
+            return
+        }
+       
+        //赋值给页面上显示
+        this.addressee = this.addressInfo.addressee;//收件人
+        this.phone = this.addressInfo.phone;
+        this.receivareaInfo.id = this.addressInfo.receivarea_id;//收货地区
+        // this.receivareaInfo.text = this.addressInfo.receivarea_id;//收货地区
+        //  this.queryloadDicById(this.receivareaInfo.id);//根据id反显收货地区名称
+        this.detailedaddress = this.addressInfo.detailedaddress;//详细地址
+        console.log( '收货地区',this.receivareaInfo.id)
+         done() //关闭
 
       } else if(action === 'cancel') {
         done() //关闭
@@ -468,7 +498,7 @@ export default {
       console.log('addWaybill', params);
       this.$post('/waybill/addWaybill', params).then(data => {
         if(data.code === '0') {
-          this.$toast.success("创建成功");
+          this.$toast.success(this.$t('创建成功'));
           //跳转到我的代运单
           this.$router.push('/myWaybill');
         } else {
@@ -507,8 +537,7 @@ export default {
     deleteExpress(index){
       console.log(index);
       this.expressbillList.splice(index,1);
-    },
-   
+    }
   }
 }
 </script>

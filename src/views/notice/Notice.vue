@@ -3,7 +3,7 @@
     <div class="search_notice">
       <van-search 
         v-model="value" 
-        placeholder="请输入您要搜索的关键字" 
+        :placeholder="$t('请输入您要搜索的关键字')" 
         @search="onSearch"
       >
         <template #left-icon>
@@ -15,7 +15,7 @@
       <van-list
         v-model="loading"
         :finished="finished"
-        finished-text="没有更多了"
+        :finished-text="$t('没有更多了')"
         @load="queryPageInfo"
         v-if="pageInfo.dataList.length>0"
       >
@@ -25,7 +25,7 @@
         </van-cell>
       </van-list>
       <div class="main_notice" v-if="pageInfo.dataList.length<=0">
-        <van-empty description="暂无数据" />
+        <van-empty :description="$t('暂无数据')" />
       </div>
       </div>
   </div>

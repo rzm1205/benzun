@@ -1,7 +1,7 @@
 <template>
   <div class="main_start">
       <div class="form_Info register_form" >
-        <div class="form_title">重置密码</div>
+        <div class="form_title">{{$t('重置密码')}}</div>
         <div class="psd_form">
           <van-form @failed="onFailed" @submit="onSubmit">
               <van-field
@@ -9,26 +9,26 @@
                 name="newPwd"
                 required
                 type="password"
-                label="密码"
-                placeholder="请输入密码"
-                :rules="[{ required: true, message: '请输入密码' }]"
+                :label="$t('密码')"
+                :placeholder="$t('请输入密码')"
+                :rules="[{ required: true, message: $t('请输入密码')}]"
               />
               <van-field
                 v-model="newPwd2"
                 required
                 name="newPwd2"
                 type="password"
-                label="确认密码"
-                placeholder="请再次输入密码"
+                :label="$t('确认密码')"
+                :placeholder="$t('请再次输入密码')"
                 @blur="validatePass2" 
                 :error-message="errMsg" 
                 :rules="[
-                  { required: true, message: '请再次输入密码' }
+                  { required: true, message: $t('请再次输入密码') }
                 ]"
               />
               <div class="form_sumit">
                   <van-button round block type="info" class="validate_activeBtn"  native-type="submit">
-                    确认
+                    {{$t('确认')}}
                   </van-button>
               </div>
             </van-form>
@@ -55,7 +55,7 @@ export default {
     // 校验函数返回 true 表示校验通过，false 表示不通过
     validatePass2(){
       if(this.newPwd !== this.newPwd2) {
-        this.errMsg = '两次输入密码不一致'
+        this.errMsg = this.$t('两次输入密码不一致');
         return false
       } else {
         this.errMsg = '';
@@ -76,7 +76,7 @@ export default {
       console.log('resetPWD', params);
       this.$post('/resetPWD', params).then(data => {
         if(data.code === '0') {
-          this.$toast.success("重置成功");
+          this.$toast.success(this.$t('重置成功'));
           this.$router.push('/login');
         } else {
           if(data && data.msg){

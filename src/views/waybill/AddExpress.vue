@@ -12,8 +12,8 @@
               :value="companyInfo.text"
               type="text"
               name="companyId"
-              label="快递公司"
-              placeholder="请选择"
+              :label="$t('快递公司')"
+              :placeholder="$t('请选择')"
                @click="showCompanyDialog = true"
             />
             <!-- 快递公司列表弹出层 -->
@@ -24,7 +24,7 @@
               <van-picker
                 item-height='45'
                 visible-item-count='4'
-                title="请选择快递公司"
+                :title="$t('快递公司')"
                 show-toolbar
                 :columns="companyList_name"
                 @cancel="showCompanyDialog = false"
@@ -36,27 +36,27 @@
               required
               name="expressnum"
               type="text"
-              label="快递单号"
-              placeholder="请输入"
-               :rules="[{ required: true, message: '请输入快递单号' }]"
+              :label="$t('快递单号')"
+              :placeholder="$t('请输入')"
+               :rules="[{ required: true, message: $t('请输入快递单号')}]"
             />
             <van-field
               v-model="expressInfo.name"
               required
               name="name"
               type="text"
-              label="物品名称"
-              placeholder="请输入"
-              :rules="[{ required: true, message: '请输入物品名称' }]"
+              :label="$t('物品名称')"
+              :placeholder="$t('请输入')"
+              :rules="[{ required: true, message: $t('请输入物品名称')}]"
             />
             <van-field
               v-model="expressInfo.num"
               required
               name="num"
               type="number"
-              label="物品数量"
-              placeholder="请输入"
-              :rules="[{ required: true, type:'number', message: '请输入物品数量' }]"
+              :label="$t('物品数量')"
+              :placeholder="$t('请输入')"
+              :rules="[{ required: true, type:'number', message: $t('请输入物品数量')}]"
             />
             <div class="waybillInfo_pay">
               <div class="payInfo_sumit">
@@ -66,14 +66,14 @@
                   class="validate_activeBtn" 
                   native-type="submit" 
                   >
-                    确认添加
+                   {{$t('确认添加')}}
                   </van-button>
                 </div>
                 <div class="form_sumit">
                   <van-button round block type="default" 
                   @click="cancelExpress"
                   >
-                    取消
+                   {{$t('取消')}} 
                   </van-button>
                 </div>
               </div>
@@ -144,7 +144,7 @@ export default {
       console.log('express', values);
       this.$post('/expressbill/addExpressbill', params).then(data => {
         if(data.code === '0') {
-          this.$toast.success("创建成功");
+          this.$toast.success(this.$t('创建成功'));
           //返回代运单详情页-待确认页面
           this.$router.push('/waybillInfo/'+this.waybillId+'/0');
         } else {

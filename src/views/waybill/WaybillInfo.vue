@@ -4,16 +4,16 @@
       <div class="psd_title waybillInfo_header">
         <!-- 0-待确认，1-待付款，2-已付款，3-运输中，4-已完成，5-已取消 -->
         <div class="waybillInfo_name" :style="{'padding-top':(((curType != '0' || curType != 0 )&& (curType != '1' || curType != 1))?'0.22rem':'0.50667rem')}">
-           <h4 v-if="curType === '0' || curType === 0">等待平台确认</h4>
-           <h4 v-if="curType === '1' || curType === 1">等待您付款</h4>
-           <h4 v-if="curType === '2' || curType === 2">运输中</h4>
-           <h4 v-if="curType === '3' || curType === 3">已完成</h4>
+           <h4 v-if="curType === '0' || curType === 0">{{$t('等待平台确认')}}</h4>
+           <h4 v-if="curType === '1' || curType === 1">{{$t('等待您付款')}}</h4>
+           <h4 v-if="curType === '2' || curType === 2">{{$t('运输中')}}</h4>
+           <h4 v-if="curType === '3' || curType === 3">{{$t('已完成')}}</h4>
            <div class="waybillInfo_order">
-            <span>订单号:</span>
+            <span>{{$t('订单号')}}:</span>
             <font>{{pageInfo_waybill.orderNumber}}</font>
           </div>
           <div class="waybillInfo_waybill" v-if="(curType != 0 || curType != '0') && (curType != 1 || curType != '1')">
-            <span>运单号:</span>
+            <span>{{$t('运单号')}}:</span>
             <font>{{pageInfo_waybill.waybillNumber}}</font>
           </div>
         </div>
@@ -34,7 +34,7 @@
         <div class="receiver_header">
           <div class="receiver_name">
             <img src="~/assets/images/main/position.png" alt="">
-            <span>收货人:</span>
+            <span>{{$t('收货人')}}:</span>
             <font>{{pageInfo_waybill.addressee}}</font>
           </div>
           <div class="receiver_city">
@@ -44,40 +44,40 @@
         <div class="receiver_detail">
           <div class="receiver_mode">
             <div>
-              <span>联系电话:</span>
+              <span>{{$t('联系电话')}}:</span>
               <font>{{pageInfo_waybill.phone}}</font>
             </div>
             <div  v-if="curType!=0">
-              <span>运输金额:</span>
+              <span>{{$t('运输金额')}}:</span>
               <font>RM{{pageInfo_waybill.amountRm}}</font>
               <!-- <font>RM{{pageInfo_waybill.amountRmb}}</font> -->
             </div>
           </div>
           <div class="receiver_mode">
             <div>
-              <span>邮编:</span>
+              <span>{{$t('邮编')}}:</span>
               <font>{{pageInfo_waybill.postcode}}</font>
             </div>
             <div>
-              <span>运输方式:</span>
+              <span>{{$t('运输方式')}}:</span>
               <font>{{transtypeName}}</font>
             </div>
           </div>
           <div class="receiver_address">
             <div style="width:100%">
-              <span>详细地址:</span>
+              <span>{{$t('详细地址')}}:</span>
               <font>{{pageInfo_waybill.detailedaddress}}</font>
             </div>
           </div>
           <div class="receiver_mode" v-if="curType===3 || curType==='3' ">
             <div style="width:100%;">
-              <span>创建时间:</span>
+              <span>{{$t('创建时间')}}:</span>
               <font>{{pageInfo_waybill.ctime}}</font>
             </div>
           </div>
           <div class="receiver_mode" v-if="curType===3|| curType==='3'">
             <div style="width:100%;">
-              <span>完成时间:</span>
+              <span>{{$t('完成时间')}}:</span>
               <font>{{pageInfo_waybill.ftime}}</font>
             </div>
           </div>
@@ -89,7 +89,7 @@
         icon="plus" 
         @click="addExpress"
         >
-          添加快递单
+          {{$t('添加快递单')}}
         </van-button>
       </div>
       <!-- 快递单号list -->
@@ -97,55 +97,55 @@
           <van-list
             v-model="loading"
             :finished="finished"
-            finished-text="没有更多了"
+            :finished-text="$t('没有更多了')"
             @load="queryPageList_express"
           >
             <div class="waybill_list waybillInfo_list"  v-for="item in pageInfo_express.dataList" :key="item.id">
               <div class="waybill_title">
-                <span>快递单号:</span>
+                <span>{{$t('快递单号')}}:</span>
                 <font>{{item.expressnum}}</font>
                 <div class="waybillInfo_state" v-if="curType===0 || curType==='0' || curType===1 || curType==='1'">
-                  <img v-if="item.state === 0"  src="~/assets/images/main/storage_wait.png" alt="">
-                  <img v-if="item.state === 1"  src="~/assets/images/main/storage_already.png" alt="">
+                  <img v-if="item.state === '0'"  src="~/assets/images/main/storage_wait.png" alt="">
+                  <img v-if="item.state === '1'"  src="~/assets/images/main/storage_already.png" alt="">
                 </div>
               </div>
               <div class="receiver_detail waybillInfo_detail"  
                :style="{'padding-bottom':(curType===0||curType==='0')?'0.64rem':'0.26667rem'}">
                 <div class="receiver_mode expressInfo">
                   <div>
-                    <span>快递公司:</span>
+                    <span>{{$t('快递公司')}}:</span>
                     <font>{{item.companyText}}</font>
                   </div>
                   <div>
-                    <span>物品名称:</span>
+                    <span>{{$t('物品名称')}}:</span>
                     <font>{{item.name}}</font>
                   </div>
                 </div>
                 <div class="receiver_mode expressInfo">
                   <div>
-                    <span>物品数量:</span>
+                    <span>{{$t('物品数量')}}:</span>
                     <font>{{item.num}}</font>
                   </div>
                   <!-- 状态是未入库时，不显示查看图片按钮和重量体积，状态是已入库时才显示 -->
-                  <div v-if="item.state === 0">
+                  <div v-if="item.state === '1'">
                     <span>
                       <a href="javascript:void(0);"
-                        @click.stop="viewImagePreview"
+                        @click.stop="viewImagePreview(item.img)"
                         class="active_img"
                         >
-                        查看图片
+                        {{$t('查看图片')}}
                       </a>
                      </span>
                   </div>
                 </div>
                  <div class="receiver_mode expressInfo" >
                   <div>
-                    <span>重量体积:</span>
-                    <font v-if="item.state === 0">{{item.weightvolume}}</font>
+                    <span>{{$t('重量体积')}}:</span>
+                    <font v-if="item.state === '1'">{{item.weightvolume}}</font>
                   </div>
                 </div>
                 <div @click.stop="deleteExpressDialog(item.id)" class="express_deleteBtn"  v-if="curType===0 || curType==='0'">
-                  <span>删除</span>
+                  <span>{{$t('删除')}}</span>
                 </div>
               </div>
             </div>
@@ -161,7 +161,7 @@
               <van-button round block type="default"
               @click="cancelOrder"
               >
-                取消订单
+                {{$t('取消订单')}}
               </van-button>
             </div>
           </div>
@@ -169,7 +169,7 @@
          <!-- 待付款1 -->
         <div class="waybillInfo_pay" v-if="curType===1 || curType==='1'">
           <div class="payInfo_money">
-            <span>共计: RM</span>
+            <span>{{$t('共计')}}: RM</span>
             <font>{{pageInfo_waybill.amountRm}}</font>
             <!-- <font>{{pageInfo_waybill.amountRmb}}</font> -->
           </div>
@@ -179,14 +179,14 @@
               class="validate_activeBtn" 
               @click="payDialog"
               >
-                确认付款
+                {{$t('确认付款')}}
               </van-button>
             </div>
             <div class="form_sumit">
               <van-button round block type="default" 
               @click="cancelOrder"
               >
-                取消订单
+               {{$t('取消订单')}} 
               </van-button>
             </div>
           </div>
@@ -194,13 +194,13 @@
         <div class="waybillInfo_pay waybillInfo_receive" v-if="curType===2 || curType==='2'">
           <div class="payInfo_sumit">
             <div class="receive_tips">
-              注：15日后自动确认签收
+              {{$t('注：15日后自动确认签收')}}
             </div>
             <div class="form_sumit">
               <van-button round block type="info" class="validate_activeBtn" 
               @click="receiptDialog"
               >
-                确认签收
+                {{$t('确认签收')}}
               </van-button>
             </div>
           </div>
@@ -221,8 +221,7 @@ export default {
       receivareaName:'',//收货地区名称
       transtypeName:'',//运输方式名称
       loading: false,//列表加载
-      finished: false,//是否还有数据
-      imgurl:'https://img.yzcdn.cn/vant/cat.jpeg'
+      finished: false//是否还有数据
     }
   },
   created(){
@@ -308,8 +307,7 @@ export default {
     //删除快递单弹框
     deleteExpressDialog(id){
       this.$dialog.confirm({
-        message: '确定要删除该快递单吗？',
-         confirmButtonText:'确定'
+        message: this.$t('确认要删除该快递单吗？'),
       }).then(() => {
         //删除方法
         this.deleteExpressMethod(id);
@@ -327,7 +325,7 @@ export default {
       console.log('点击了删除');
       this.$post('/expressbill/deleteExpressbillById', params).then(data => {
         if(data.code === '0') {
-          this.$toast.success("删除成功");
+          this.$toast.success(this.$t('删除成功'));
           this.queryPageList_express(this.curType);//查询快递单列表
         } else {
           if(data && data.msg){
@@ -344,7 +342,7 @@ export default {
       };
       this.$post('/waybill/cancelWaybill', params).then(data => {
         if(data.code === '0') {
-          this.$toast.success("取消订单成功");
+          this.$toast.success(this.$t('取消订单成功'));
           this.$router.push('/myWaybill');
           // this.queryPageList_express(this.curType);//查询快递单列表
         } else {
@@ -357,8 +355,7 @@ export default {
     //确认付款的弹框
     payDialog(){
       this.$dialog.confirm({
-        message: '确定要付款吗？',
-         confirmButtonText:'确定'
+        message: this.$t('确认要付款该代运单吗？'),
       }).then(() => {
         //付款方法
         this.confirmPay();
@@ -375,7 +372,7 @@ export default {
       };
       this.$post('/waybill/payWaybill', params).then(data => {
         if(data.code === '0') {
-          this.$toast.success("付款成功");
+          this.$toast.success(this.$t('付款成功'));
           // this.queryInfo_waybill();
            this.$router.push('/myWaybill');
           // this.queryPageList_express(this.curType);//查询快递单列表
@@ -389,8 +386,7 @@ export default {
     //签收确认框
     receiptDialog() {
       this.$dialog.confirm({
-        message: '确定要签收该代运单吗？',
-         confirmButtonText:'确定'
+        message: this.$t('确认要签收该代运单吗？'),
       }).then(() => {
         //签收方法
         this.confirmReceipt();
@@ -408,7 +404,7 @@ export default {
       };
       this.$post('/waybill/signWaybill', params).then(data => {
         if(data.code === '0') {
-          this.$toast.success("签收成功");
+          this.$toast.success(this.$t('签收成功'));
           this.$router.push('/myWaybill');
           // this.queryPageList_express(this.curType);//查询快递单列表
         } else {
@@ -418,11 +414,11 @@ export default {
         }
       })
     },
-    //查看图片
-    viewImagePreview(){
+    //查看图片-图片预览
+    viewImagePreview(imgurl){
       ImagePreview({
         images: [
-          this.imgurl
+          imgurl
         ],
         closeable: true,
         showIndex:false,//是否显示页码

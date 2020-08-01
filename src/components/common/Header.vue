@@ -6,7 +6,7 @@
         fixed
       >
         <template #left v-if="this.$route.path!='/main'">
-          <van-icon name="arrow-left" />返回
+          <van-icon name="arrow-left" />{{$t('返回')}}
         </template>
         <template #title>
           <div class="header_title">{{title}}</div>
@@ -32,7 +32,7 @@
           <div class="profileInfo">
             <div class="profile_user">
               <img src="~/assets/images/profile/user.png" alt="">
-              <div class="profile_name">用户名用户名</div>
+              <div class="profile_name">{{username}}</div>
             </div>
             <div class="profile_menu">
                 <van-cell is-link to="/myWaybill" size="large">
@@ -40,44 +40,44 @@
                 <template #title>
                   <!-- <van-icon name="setting-o" /> -->
                   <img src="~/assets/images/profile/menu1.png" alt="">
-                  <span class="custom-title">我的代运单</span>
+                  <span class="custom-title">{{$t('我的代运单')}}</span>
                 </template>
               </van-cell>
               <van-cell is-link to="/promotionLink" size="large">
                 <template #title>
                   <img src="~/assets/images/profile/menu2.png" alt="">
-                  <span class="custom-title">推广链接</span>
+                  <span class="custom-title">{{$t('推广链接')}}</span>
                 </template>
               </van-cell>
               <van-cell is-link to="/addWaybill" size="large">
                 <template #title>
                   <img src="~/assets/images/profile/menu3.png" alt="">
-                  <span class="custom-title">创建代运单</span>
+                  <span class="custom-title">{{$t('创建代运单')}}</span>
                 </template>
               </van-cell>
               <van-cell is-link to="/myWallet" size="large">
                 <template #title>
                   <img src="~/assets/images/profile/menu4.png" alt="">
-                  <span class="custom-title">我的钱包</span>
+                  <span class="custom-title">{{$t('我的钱包')}}</span>
                 </template>
               </van-cell>
               <van-cell is-link to="/modifyPassword" size="large">
                 <template #title>
                 <img src="~/assets/images/profile/menu5.png" alt="">
-                  <span class="custom-title">修改密码</span>
+                  <span class="custom-title">{{$t('修改密码')}}</span>
                 </template>
               </van-cell>
               <van-cell is-link to="/notice" size="large">
                 <template #title>
                   <img src="~/assets/images/profile/menu6.png" alt="">
-                  <span class="custom-title">通知公告</span>
+                  <span class="custom-title">{{$t('通知公告')}}</span>
                 </template>
               </van-cell>
               <div></div>
             </div>
             <div class="form_sumit quit_btn">
               <van-button round block type="info" class="validate_activeBtn" @click="quitDialog">
-              退出登录
+              {{$t('退出登录')}}
             </van-button>
             </div>
           </div>
@@ -95,6 +95,7 @@ export default {
   name: 'Header',
   data() {
     return {
+      username:this.$store.state.username,
       popupShow:false,
       title:this.$route.meta.title,// 动态获取导航栏navbar的title信息
     }
@@ -126,11 +127,10 @@ export default {
      //退出弹框
     quitDialog() {
       this.$dialog.confirm({
-        message: '确定要退出吗？',
-         confirmButtonText:'确定'
+        message: this.$t('确定要退出吗？'),
       }).then(() => {
         //删除方法
-        this.quitFu()
+        this.quitFu();
         // on confirm
       }).catch(() => {
         console.log('点击了取消');
@@ -144,6 +144,7 @@ export default {
           // 清除localStorage token值
           localStorage.removeItem('token');// token值
           localStorage.removeItem('username');// username值
+          localStorage.removeItem('name');// name值
           this.$router.push('/login');
       })
     },

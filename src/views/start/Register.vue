@@ -1,66 +1,76 @@
 <template>
   <div class="main_start">
       <div class="form_Info register_form" >
-        <div class="form_title">欢迎您注册！</div>
+        <div class="form_title">{{$t('欢迎您注册！')}}</div>
         <div class="psd_form">
            <van-form @failed="onFailed" @submit="onSubmit">
               <van-field
                 v-model="username"
                 required
-                label="用户名"
+                :label="$t('用户名')"
                 name="username"
-                placeholder="用户名"
+                :placeholder="$t('请输入用户名')"
                 @blur="checkIsStoreDataBase('username')"
                 :error-message="errMsg_username" 
-                :rules="[{ required: true, message: '请输入用户名' }]"
+                :rules="[{ required: true, message: this.$t('请输入用户名')}]"
+              />
+              <van-field
+                v-model="name"
+                required
+                :label="$t('昵称')"
+                name="name"
+                :placeholder="$t('请输入昵称')"
+                :rules="[{ required: true, message: this.$t('请输入昵称') }]"
               />
               <van-field
                 v-model="password"
                 required
                 type="password"
-                label="密码"
+                :label="$t('密码')"
                 name="password"
-                placeholder="请输入密码"
-                :rules="[{ required: true, message: '请输入密码' }]"
+                :placeholder="$t('请输入密码')"
+                :rules="[{ required: true, message: this.$t('请输入密码')}]"
               />
               <van-field
                 v-model="password2"
                 required
                 type="password"
-                label="确认密码"
+                :label="$t('确认密码')"
                 name="password2"
                 @blur="validatePass2" 
-                placeholder="请再次输入密码"
+                :placeholder="$t('请再次输入密码')"
                 :error-message="errMsg" 
-                :rules="[{ required: true, message: '请再次输入密码' }]"
+                :rules="[{ required: true, message: this.$t('请再次输入密码')}]"
               />
               <van-field
                 v-model="phone"
                 required
                 type="tel"
-                label="手机号"
+                :label="$t('手机号')"
                 name="phone"
-                placeholder="请输入手机号"
+                :placeholder="$t('请输入手机号')"
                 @blur="checkIsStoreDataBase('phone')"
                 :error-message="errMsg_phone" 
-                :rules="[{ required: true, message: '请输入手机号' },
-                { pattern: /^1[3456789]\d{9}$/, message: '手机号码格式错误'}
+                :rules="[{ required: true, message: this.$t('请输入手机号')},
+                { pattern: /^1[3456789]\d{9}$/, message: this.$t('手机号码格式错误')}
                 ]"
               />
               <van-field
                 v-model="email"
                 required
                 type="email"
-                label="邮箱地址"
+                :label="$t('邮箱地址')"
                 name="email"
                 @blur="checkIsStoreDataBase('email')"
-                placeholder="请输入邮箱地址"
+                :placeholder="$t('请输入邮箱地址')"
                 :error-message="errMsg_email" 
-                :rules="[{ required: true, message: '请输入邮箱地址' }]"
+                :rules="[{ required: true, message: this.$t('请输入邮箱地址') },
+                { pattern: /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/, message: this.$t('邮箱地址格式错误')}
+                ]"
               />
               <div class="form_sumit">
                   <van-button round block type="info" class="validate_activeBtn" native-type="submit" >
-                    注册
+                    {{$t('注册')}}
                   </van-button>
               </div>
             </van-form>
@@ -78,7 +88,8 @@ export default {
   name: "Login",
   data() {
     return {
-      username: '',
+      username: '',//用户名
+      name:'',//昵称
       password: '',
       password2: '',
       errMsg:'',
@@ -86,7 +97,6 @@ export default {
       errMsg_phone:'',
       errMsg_email:'',
       phone:'',
-      name:'',
       email:'',
       recoId:''//推荐人id====如果是点击别的用户的推广链接进来的注册用户界面，肯定会带一个recoId，这个是推广人id，如果有的话，就传，没有就不传
     }
@@ -98,7 +108,7 @@ export default {
      // 校验函数返回 true 表示校验通过，false 表示不通过
     validatePass2(){
       if(this.password !== this.password2) {
-        this.errMsg = '两次输入密码不一致'
+        this.errMsg = this.$t('两次输入密码不一致');
         return false
       } else {
         this.errMsg = '';
@@ -152,17 +162,17 @@ export default {
       this.recoId = getUrlKey('recoId',window.location.href);
       let params = {
         username:this.username,
+        name:this.name,
         password:sha256(this.password),//sha256加密
         // password2:sha256(this.password2),//不用传后台。前端做一下密码是否输入一致
         phone:this.phone,
-        name:this.name,
         email:this.email,
-        recoId:this.recoId
+        recoId:this.recoId?this.recoId:''
       }
       console.log('register', params);
       this.$post('/register', params).then(data => {
         if(data.code === '0') {
-          this.$toast.success("注册成功");
+          this.$toast.success( this.$t('注册成功'));
             this.$router.push('/login');
         } else {
           if(data && data.msg){

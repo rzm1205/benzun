@@ -41,7 +41,7 @@ module.exports = {
       lintOnSave: false, // eslint 不限制
       devServer: {
         open: true, //是否自动弹出浏览器页面
-        host: "192.168.1.76", 
+        host: "192.168.1.8", 
         port: '8085',
         https: false,
         hotOnly: false, 

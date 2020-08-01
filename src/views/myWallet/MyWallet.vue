@@ -4,11 +4,11 @@
         <div class="wallet_bg">
             <div class="wallet_title_left">
               <div class="wallet_name">
-                <span>用户名称:</span>
+                <span>{{$t('用户名称')}}:</span>
                 <font>{{username}}</font>
               </div>
               <div class="wallet_money">
-                <span>钱包余额:</span>
+                <span>{{$t('钱包余额')}}:</span>
                 <font>RM {{amount}}</font>
               </div>
             </div>
@@ -18,19 +18,19 @@
         </div>
       </div>
       <div class="wallet_main">
-        <h4 v-if="pageInfo.length>0">消费记录</h4>
+        <h4 v-if="pageInfo.length>0">{{$t('消费记录')}}</h4>
         <div class="wallet_record"  >
            <van-list
               v-model="loading"
               :finished="finished"
-              finished-text="没有更多了"
+              :finished-text="$t('没有更多了')"
               @load="queryPageInfo"
               v-if="pageInfo.length>0"
             >
             <div class="wallet_list"  v-for="item in pageInfo.dataList" :key="item.id" >
               <div class="wallet_order">
                   <div class="record_name">
-                    <span>订单号:</span>
+                    <span>{{$t('订单号')}}:</span>
                     <font>{{item.con}}</font>
                   </div>
                   <div class="record_money">
@@ -38,13 +38,13 @@
                   </div>
                 </div>
                 <div class="record_time">
-                  <span>消费时间:</span>
+                  <span>{{$t('消费时间')}}:</span>
                   <font>{{item.ctime}}</font>
                 </div>
               </div>
             </van-list>
            <div class="" >
-            <van-empty description="暂无消费记录" />
+            <van-empty :description="$t('暂无数据')" />
           </div>
         </div>
     </div>

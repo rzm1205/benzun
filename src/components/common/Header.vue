@@ -113,7 +113,27 @@ export default {
   },
   created() {
     //  console.log(this.$route.meta.title)
-    console.log(this.$route.path);
+    //刷新后title的变化
+    // console.log(this.$route.path);
+    if(this.$route.path ==='/myWaybill'){
+      this.title = this.$t('我的代运单');
+    }else if(this.$route.path ==='/main'){
+      this.title = this.$t('本尊快递');
+    }else if(this.$route.path ==='/promotionLink'){
+      this.title = this.$t('推广链接');
+    }else if(this.$route.path ==='/addWaybill'){
+      this.title = this.$t('创建代运单');
+    }else if(this.$route.path.indexOf('/addExpress')!=-1){
+      this.title = this.$t('添加快递单');
+    }else if(this.$route.path ==='/myWallet'){
+      this.title = this.$t('我的钱包');
+    }else if(this.$route.path ==='/modifyPassword'){
+      this.title = this.$t('修改密码');
+    }else if(this.$route.path ==='/notice'){
+      this.title = this.$t('通知公告');
+    }else if(this.$route.path.indexOf('/noticeInfo')!=-1){
+      this.title = this.$t('公告详情');
+    }
     // console.log(this.$route.path.indexOf('/personnelInfo')!=-1)
   },
   // 基于路线变化的动态设置路由切换 meta.title，
@@ -125,7 +145,8 @@ export default {
         //   let state = 0;
         //   this.$store.commit('refreshWaybillState',{waybillState: state});
         // }
-        this.title = this.$route.meta.title;
+        this.title = this.$t(this.$route.meta.title);
+        console.log('title',this.title);
         //关闭popup弹框，当路由切换时关闭
         this.popupShow = false;
       }

@@ -4,7 +4,7 @@
       <div class="modifyPSD">
           <div class="psd_title">
             <!-- 昵称{{name}} -->
-            <span>{{$t('请为您的账号xxx修改密码')}}</span>
+            <span>{{$t('请为您的账号')}}{{name}}{{$t('修改密码2')}}</span>
           </div>
           <div class="psd_form">
               <van-form @submit="onSubmit">

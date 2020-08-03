@@ -36,7 +36,7 @@
                     <font style="margin-left:0;">{{item.con}}</font>
                   </div>
                   <div class="record_money">
-                    ￥{{item.amount}}
+                    RM{{item.amount}}
                   </div>
                 </div>
                 <div class="record_time">

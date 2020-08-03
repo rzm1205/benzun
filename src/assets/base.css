@@ -232,6 +232,7 @@ input:-ms-input-placeholder {
   height: 100%;
   background: #ffffff;
   overflow: hidden;
+  overflow-y: auto;
 }
 .start_logo{
   width: 113px;
@@ -364,11 +365,14 @@ input:-ms-input-placeholder {
   line-height: 66px;
   text-align: center;
   border-radius: 50%;
-  background: #F68F21;
-  color: #FFFFFF;
   vertical-align: middle;
   margin: 0 auto;
   margin-top: 38px;
+  box-shadow: 0 0 8px rgba(246,143,33,.4);
+  font-size:40px;
+  font-family:FZLTCHJW--GB1-0,FZLTCHJW--GB1;
+  font-weight:normal;
+  color:rgba(246,143,33,1);
 }
 .profile_user img{
   width: 66px;
@@ -576,7 +580,11 @@ input:-ms-input-placeholder {
   background: #FFFFFF;
   text-align: center;
   line-height: 70px;
-  color: #F68F21;
+  color:rgba(246,143,33,1);
+  font-size:40px;
+  font-family:FZLTCHJW--GB1-0,FZLTCHJW--GB1;
+  font-weight:normal;
+  letter-spacing:1px;
 }
 .wallet_title_right img{
   width: 100%;
@@ -610,13 +618,13 @@ input:-ms-input-placeholder {
   display: -moz-flex;
   align-items: center;
   justify-content: space-between;
-  font-size:16px;
+  font-size:15px;
   font-family:PingFangSC-Medium,PingFang SC;
   font-weight:500;
   color:#333333;
 }
 .record_money{
-  font-size:16px;
+  font-size:15px;
   font-family:PingFangSC-Medium,PingFang SC;
   font-weight:500;
   color:#F68F21;
@@ -659,6 +667,7 @@ input:-ms-input-placeholder {
   font-size:15px;
   font-family:PingFangSC-Regular,PingFang SC;
   font-weight:400;
+  line-height: 1;
   color:#333333;
   flex: 1;
 }
@@ -800,7 +809,8 @@ input:-ms-input-placeholder {
   padding-top: 19px;
 }
 .waybillInfo_name h4{
-  font-size:20px;
+  /* font-size:20px; */
+  font-size:18px;
   font-style: normal;
   font-family:PingFangSC-Medium,PingFang SC;
   font-weight:500;
@@ -1032,7 +1042,8 @@ input:-ms-input-placeholder {
   padding: 12px 0;
 }
 .payInfo_sumit .form_sumit{
-  width: 130px;
+  /* width: 130px; */
+  width: auto;
   height: 35px;
   margin: 0;
 }

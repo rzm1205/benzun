@@ -5,36 +5,38 @@
             <div class="wallet_title_left">
               <div class="wallet_name">
                 <span>{{$t('用户名称')}}:</span>
-                <font>{{username}}</font>
+                <font>{{name}}</font>
               </div>
               <div class="wallet_money">
                 <span>{{$t('钱包余额')}}:</span>
-                <font>RM {{amount}}</font>
+                <font v-if="amount">RM {{amount}}</font>
               </div>
             </div>
             <div class="wallet_title_right">
-              <img src="~/assets/images/profile/user.png" alt="">
+              {{getNameFn}}
+              <!-- <img src="~/assets/images/profile/user.png" alt=""> -->
             </div>
         </div>
       </div>
       <div class="wallet_main">
-        <h4 v-if="pageInfo.length>0">{{$t('消费记录')}}</h4>
+        <h4 v-if="pageInfo.total>0">{{$t('消费记录')}}</h4>
         <div class="wallet_record"  >
            <van-list
               v-model="loading"
               :finished="finished"
               :finished-text="$t('没有更多了')"
-              @load="queryPageInfo"
-              v-if="pageInfo.length>0"
+              :immediate-check="false"
+              @load="onLoad"
+              v-if="pageInfo.total>0"
             >
-            <div class="wallet_list"  v-for="item in pageInfo.dataList" :key="item.id" >
+            <div class="wallet_list"  v-for="item in itemList" :key="item.id" >
               <div class="wallet_order">
                   <div class="record_name">
-                    <span>{{$t('订单号')}}:</span>
-                    <font>{{item.con}}</font>
+                    <!-- <span>{{$t('订单号')}}:</span> -->
+                    <font style="margin-left:0;">{{item.con}}</font>
                   </div>
                   <div class="record_money">
-                    {{item.amount}}
+                    ￥{{item.amount}}
                   </div>
                 </div>
                 <div class="record_time">
@@ -43,7 +45,7 @@
                 </div>
               </div>
             </van-list>
-           <div class="" >
+           <div v-if="pageInfo.total === 0">
             <van-empty :description="$t('暂无数据')" />
           </div>
         </div>
@@ -60,14 +62,24 @@ export default {
       pageInfo:{},
       loading: false,
       finished: false,
-      refreshing: false,
+      itemList:[],//列表查询
       amount:{},//查询余额
-      username:this.$store.state.username
+      name:this.$store.state.name,
+      header_name:''//头像上的昵称显示
+    }
+  },
+  computed:{
+    getNameFn: function(){
+        //头像是动态的以橙色背景圆形图，里面的内容是昵称，如果昵称是汉字就取第一个汉字，如果是英文就取第一个字母，不论大小写，转化为大写字母
+        this.header_name = this.name.substr(0,1);
+        // if(/.*[\u4e00-\u9fa5]+.*$/.test(this.header_name)) { 
+          return this.header_name.toUpperCase(); 
+        // }
     }
   },
   created(){
     this.queryAmountInfo();//查询余额
-    this.queryPageInfo();
+    this.queryPageInfo();//查记录
   },
   methods:{
     // 查询余额
@@ -91,10 +103,23 @@ export default {
         }
         this.$post('/paymentrecord/queryPaymentrecordList',params).then(data => {
           if(data.code === '0') {
-             // 加载状态结束
+             this.pageInfo = data;
+            let rows = data.dataList; //请求返回当页的列表
             this.loading = false;
-            this.pageInfo = data;
-            this.finished = true;
+            this.pageInfo.total = data.total; //总数
+            if (rows == null || rows.length === 0) {
+              // 加载结束
+              this.finished = true;
+              return;
+            }
+            // 将新数据与老数据进行合并
+            this.itemList = this.itemList.concat(rows);
+          
+          //如果列表数据条数>=总条数，不再触发滚动加载
+            if (this.itemList.length >= this.pageInfo.total) {
+              this.finished = true;
+            }
+            // 如果加载完毕，显示没有更多了
           } else {
             if(data && data.msg){
               this.$toast.fail(data.msg);
@@ -102,6 +127,11 @@ export default {
           }
         })
     },
+    //onload事件
+    onLoad(state){
+      this.current++;
+      this.queryPageInfo();
+    }
   }
 }
 </script>

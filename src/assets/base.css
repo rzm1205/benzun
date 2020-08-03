@@ -358,6 +358,18 @@ input:-ms-input-placeholder {
   text-align: center;
   padding-bottom: 44px;
 }
+.profile_Headername{
+  width: 66px;
+  height: 66px;
+  line-height: 66px;
+  text-align: center;
+  border-radius: 50%;
+  background: #F68F21;
+  color: #FFFFFF;
+  vertical-align: middle;
+  margin: 0 auto;
+  margin-top: 38px;
+}
 .profile_user img{
   width: 66px;
   height: 66px;
@@ -560,6 +572,11 @@ input:-ms-input-placeholder {
   width: 70px;
   height: 70px;
   border-radius: 50%;
+  overflow: hidden;
+  background: #FFFFFF;
+  text-align: center;
+  line-height: 70px;
+  color: #F68F21;
 }
 .wallet_title_right img{
   width: 100%;
@@ -1114,6 +1131,6 @@ input:-ms-input-placeholder {
   width: 15px;
   height: 15px;
   vertical-align: middle;
-  margin-top: -4px;
+  margin-top: -3px;
   margin-right: 6px;
 }

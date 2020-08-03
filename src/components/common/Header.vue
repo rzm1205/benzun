@@ -31,11 +31,12 @@
          >
           <div class="profileInfo">
             <div class="profile_user">
-              <img src="~/assets/images/profile/user.png" alt="">
-              <div class="profile_name">{{username}}</div>
+              <div class="profile_Headername">{{getNameFn}}</div>
+              <!-- <img src="~/assets/images/profile/user.png" alt=""> -->
+              <div class="profile_name">{{name}}</div>
             </div>
             <div class="profile_menu">
-                <van-cell is-link to="/myWaybill" size="large">
+                <van-cell is-link @click="goMenu('/myWaybill')"  size="large">
                 <!-- 使用 title 插槽来自定义标题 -->
                 <template #title>
                   <!-- <van-icon name="setting-o" /> -->
@@ -43,31 +44,31 @@
                   <span class="custom-title">{{$t('我的代运单')}}</span>
                 </template>
               </van-cell>
-              <van-cell is-link to="/promotionLink" size="large">
+              <van-cell is-link  @click="goMenu('/promotionLink')" size="large">
                 <template #title>
                   <img src="~/assets/images/profile/menu2.png" alt="">
                   <span class="custom-title">{{$t('推广链接')}}</span>
                 </template>
               </van-cell>
-              <van-cell is-link to="/addWaybill" size="large">
+              <van-cell is-link @click="goMenu('/addWaybill')" size="large">
                 <template #title>
                   <img src="~/assets/images/profile/menu3.png" alt="">
                   <span class="custom-title">{{$t('创建代运单')}}</span>
                 </template>
               </van-cell>
-              <van-cell is-link to="/myWallet" size="large">
+              <van-cell is-link @click="goMenu('/myWallet')"  size="large">
                 <template #title>
                   <img src="~/assets/images/profile/menu4.png" alt="">
                   <span class="custom-title">{{$t('我的钱包')}}</span>
                 </template>
               </van-cell>
-              <van-cell is-link to="/modifyPassword" size="large">
+              <van-cell is-link @click="goMenu('/modifyPassword')" size="large">
                 <template #title>
                 <img src="~/assets/images/profile/menu5.png" alt="">
                   <span class="custom-title">{{$t('修改密码')}}</span>
                 </template>
               </van-cell>
-              <van-cell is-link to="/notice" size="large">
+              <van-cell is-link @click="goMenu('/notice')"  size="large">
                 <template #title>
                   <img src="~/assets/images/profile/menu6.png" alt="">
                   <span class="custom-title">{{$t('通知公告')}}</span>
@@ -95,12 +96,20 @@ export default {
   name: 'Header',
   data() {
     return {
-      username:this.$store.state.username,
+      name:this.$store.state.name,
+      header_name:'',//头像上的昵称显示
       popupShow:false,
       title:this.$route.meta.title,// 动态获取导航栏navbar的title信息
     }
   },
   computed:{
+    getNameFn: function(){
+        //头像是动态的以橙色背景圆形图，里面的内容是昵称，如果昵称是汉字就取第一个汉字，如果是英文就取第一个字母，不论大小写，转化为大写字母
+        this.header_name = this.name.substr(0,1);
+        // if(/.*[\u4e00-\u9fa5]+.*$/.test(this.header_name)) { 
+          return this.header_name.toUpperCase(); 
+        // }
+    }
   },
   created() {
     //  console.log(this.$route.meta.title)
@@ -110,6 +119,12 @@ export default {
   // 基于路线变化的动态设置路由切换 meta.title，
   watch: {
       $route(to, from) {
+        // console.log(from);
+        // console.log(to);
+        // if(from.path.indexOf('/waybillInfo')>=0 ){
+        //   let state = 0;
+        //   this.$store.commit('refreshWaybillState',{waybillState: state});
+        // }
         this.title = this.$route.meta.title;
         //关闭popup弹框，当路由切换时关闭
         this.popupShow = false;
@@ -119,6 +134,11 @@ export default {
     //显示我的tab个人页
     showMyProfileMethod(){
       this.popupShow = true;
+    },
+    //前往菜单页
+    goMenu(router){
+      this.$router.push(router);
+      this.popupShow = false;
     },
     // 返回一个特定的 DOM 节点，作为挂载的父节点
     getContainer() {

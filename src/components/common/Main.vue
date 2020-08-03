@@ -14,13 +14,24 @@
 import vHead from '@/components/common/Header'
 import vFooter from '@/components/common/Footer'
 // 引进退出方法
-import { quitMethod } from 'network/login'
-
+import { quitMethod } from 'network/login';
+// import BScroll from 'better-scroll';//引进滚动插件
 export default {
   name: "Main",
   data() {
     return {
+      scroll:null
     }
+  },
+  mounted(){
+    // console.log(document.querySelector('.main'))
+    // this.scroll = new BScroll(document.querySelector('.main'),{
+    //   click: true,  // 元素可触发点击事件
+    //   scrollX: false,  // 横向可滑动，默认为false
+    //   scrollY: true,  // 纵向可滑动，默认为true
+    //   bounce: false  // 当滚动超过边缘的时候无回弹动画
+    // })
+    // console.log(this.scroll);
   },
   components:{
       vHead,vFooter

@@ -7,7 +7,7 @@
             <van-field
               name="address"
               v-model="address" 
-              :label=" $t('常用地址')"
+              :label="$t('常用地址')"
               @click="showAddressDialog = true"
             >
               <template #input v-if="showType==='waybill'">
@@ -290,22 +290,27 @@
       <template slot="title">
         <div class="access_title">{{$t('历史地址簿')}}</div>
       </template>
-      <div class="address_box">
-        <div class="address_list" v-for="(item,index) in addressList" :key="index">
-          <van-radio-group v-model="addressInfo">
-            <div class="address_title">
-              <van-radio :name="item">
-                <template #icon="props">
-                  <img class="img-icon" :src="props.checked ? require('@/assets/images/main/radio_sel.png') : require('@/assets/images/main/radio_nor.png')" />
-                </template>
-                <span class="address_name">{{item.addressee}}</span>
-                <span class="address_phone"> {{item.phone}}</span>
-              </van-radio>
+      <div class="address_box" >
+        <div v-if="addressList.length>0">
+           <div class="address_list"  v-for="item in addressList" :key="item.id">
+              <van-radio-group v-model="addressInfo">
+                <div class="address_title">
+                  <van-radio :name="item">
+                    <template #icon="props">
+                      <img class="img-icon" :src="props.checked ? require('@/assets/images/main/radio_sel.png') : require('@/assets/images/main/radio_nor.png')" />
+                    </template>
+                    <span class="address_name">{{item.addressee}}</span>
+                    <span class="address_phone"> {{item.phone}}</span>
+                  </van-radio>
+                </div>
+                <div class="address_detail">
+                    {{item.detailedaddress}}
+                </div>
+              </van-radio-group>
             </div>
-            <div class="address_detail">
-                {{item.detailedaddress}}
-            </div>
-          </van-radio-group>
+        </div>
+        <div class="main_notice" v-if="addressList.length ===0">
+          <van-empty :description="$t('暂无数据')" />
         </div>
       </div>
     </van-dialog>
@@ -397,20 +402,23 @@ export default {
     confirmAddressMethod(action, done) {
       if(action === 'confirm') {
         console.log(this.addressInfo);
-        if(this.addressInfo === undefined || this.addressInfo === '') {
-            this.$toast(this.$t('请选择一条历史地址簿'))
-            done(false) //不关闭弹框
-            return
+        if(this.addressList && this.addressList.length>0){
+          if(this.addressInfo.addressee === undefined) {
+              this.$toast(this.$t('请选择一条历史地址簿'))
+              done(false) //不关闭弹框
+              return
+          }
         }
-       
         //赋值给页面上显示
-        this.addressee = this.addressInfo.addressee;//收件人
-        this.phone = this.addressInfo.phone;
-        this.receivareaInfo.id = this.addressInfo.receivarea_id;//收货地区
-        // this.receivareaInfo.text = this.addressInfo.receivarea_id;//收货地区
-        //  this.queryloadDicById(this.receivareaInfo.id);//根据id反显收货地区名称
-        this.detailedaddress = this.addressInfo.detailedaddress;//详细地址
-        console.log( '收货地区',this.receivareaInfo.id)
+        if(this.addressInfo.addressee){
+          this.addressee = this.addressInfo.addressee;//收件人
+          this.phone = this.addressInfo.phone;
+          this.receivareaInfo.id = this.addressInfo.receivarea_id;//收货地区
+          this.receivareaInfo.text = this.addressInfo.prefix + '·' + this.addressInfo.suffix;//收货地区
+          //  this.queryloadDicById(this.receivareaInfo.id);//根据id反显收货地区名称
+          this.detailedaddress = this.addressInfo.detailedaddress;//详细地址
+          console.log( '收货地区',this.receivareaInfo.id);
+        }
          done() //关闭
 
       } else if(action === 'cancel') {
@@ -485,6 +493,10 @@ export default {
     },
     //确认下单---代运单
     onSubmitWaybill() {
+      if( this.transTypeInfo.id === undefined ||  this.transTypeInfo.id===''){
+        this.$toast.fail('请选择运输方式');
+        return;
+      }
       let params = {
         addressee:this.addressee,//收件人
         phone:this.phone,

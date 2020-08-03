@@ -1,5 +1,11 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+
+// 解决导航栏中的vue-router在3.0版本以上重复点菜单报错问题
+const originalPush = VueRouter.prototype.push;
+VueRouter.prototype.push = function push (location) {
+  return originalPush.call(this, location).catch(err => err);
+}
 
 Vue.use(VueRouter)
 
@@ -153,10 +159,12 @@ const router = new VueRouter({
   // base: process.env.BASE_URL,
   routes
 })
+
 // 导航守卫
 // 使用 router.beforeEach 注册一个全局前置守卫，判断用户是否登陆
 router.beforeEach((to, from, next) => {
   window.scrollTo(0,0);//针对页面跳转后，滚动条不在顶部
+  
   // if (to.path === '/login') {
   //   next();
   // } else {

@@ -17,10 +17,11 @@
             v-model="loading"
             :finished="finished"
             :finished-text="$t('没有更多了')"
-            @load="queryPageInfo(curType)"
-            
+            :immediate-check="false"
+            @load="onLoad(curType)"
+            v-if="pageInfo.total>0"
           >
-            <div class="waybill_list"  v-for="item in pageInfo.dataList" :key="item.id" @click="goWaybillDetail(item.id,curType)">
+            <div class="waybill_list"  v-for="item in itemList" :key="item.id" @click="goWaybillDetail(item.id,curType)">
               <div class="waybill_title">
                 <span>{{$t('订单号')}}:</span>
                 <font>{{item.orderNumber}}</font>
@@ -30,7 +31,8 @@
                   <div class="waybill_start">
                     <!-- 收件人 -->
                     <span>{{item.addressee}}</span>
-                    <span class="waybill_start_money" v-if="curType===0||curType==='0'">
+                    <!-- 只有待付款状态1才显示 -->
+                    <span class="waybill_start_money" v-if=" (curType===1||curType==='1') && item.amountRm">
                       RM 
                       <font>{{item.amountRm}}</font>
                     </span>
@@ -53,139 +55,63 @@
               </div>
             </div>
           </van-list>
-          <div v-if="pageInfo.length>0">
+          <div v-if="pageInfo.total===0">
             <van-empty :description="$t('暂无数据')" />
           </div>
         </div>
-        <!-- <van-tabs
-           v-model="active" 
-          line-width="25px"
-          sticky
-          offset-top="2.50667rem"
-          @click="changeQueryByState"
-          >
-          <van-tab title="待付款">
-            <div class="waybill_box">
-              <van-list
-                v-model="loading"
-                :finished="finished"
-                finished-text="没有更多了"
-                @load="queryPageInfo"
-              >
-                <div class="waybill_list"  v-for="item in pageInfo" :key="item.id" @click="goWaybillDetail(item.id,active)">
-                  <div class="waybill_title">
-                    <span>订单号:</span>
-                    <font>9403948888829230</font>
-                  </div>
-                  <div class="waybill_con">
-                    <div class="waybill_process">
-                      <div class="waybill_start">
-                        王宏宇{{item.id}}
-                      </div>
-                      <div class="waybill_end">
-                        马来西亚·吉隆坡
-                      </div>
-                    </div>
-                    <div class="waybill_time">
-                      <span>下单时间:</span>
-                      <font>2020-07-26 14:22:22</font>
-                    </div>
-                  </div>
-                </div>
-              </van-list>
-            </div>
-          </van-tab>
-          <van-tab title="运输中">
-            <div class="waybill_box">
-              <van-list
-                v-model="loading"
-                :finished="finished"
-                finished-text="没有更多了"
-                @load="queryPageInfo"
-              >
-                <div class="waybill_list"  v-for="item in pageInfo" :key="item.id" @click="goWaybillDetail(item.id,active)">
-                  <div class="waybill_title">
-                    <span>订单号:</span>
-                    <font>9403948888829230</font>
-                  </div>
-                  <div class="waybill_con">
-                    <div class="waybill_process">
-                      <div class="waybill_start">
-                        王宏宇{{item.id}}
-                      </div>
-                      <div class="waybill_end">
-                        马来西亚·吉隆坡
-                      </div>
-                    </div>
-                    <div class="waybill_time">
-                      <span>下单时间:</span>
-                      <font>2020-07-26 14:22:22</font>
-                    </div>
-                    <div class="waybill_view">
-                      <span class="waybill_router" @click="queryExpressRouter">查看物流</span>
-                      <span class="waybill_confirm" @click="confirmReceipt">确认签收</span>
-                    </div>
-                  </div>
-                </div>
-              </van-list>
-            </div>
-          </van-tab>
-          <van-tab title="已完成">
-            <div class="waybill_box">
-              <van-list
-                v-model="loading"
-                :finished="finished"
-                finished-text="没有更多了"
-                @load="queryPageInfo"
-              >
-                <div class="waybill_list"  v-for="item in pageInfo" :key="item.id" @click="goWaybillDetail(item.id,active)">
-                  <div class="waybill_title">
-                    <span>订单号:</span>
-                    <font>9403948888829230</font>
-                  </div>
-                  <div class="waybill_con">
-                    <div class="waybill_process">
-                      <div class="waybill_start">
-                        王宏宇{{item.id}}
-                      </div>
-                      <div class="waybill_end">
-                        马来西亚·吉隆坡
-                      </div>
-                    </div>
-                    <div class="waybill_time">
-                      <span>完成时间:</span>
-                      <font>2020-07-26 14:22:22</font>
-                    </div>
-                  </div>
-                </div>
-              </van-list>
-            </div>
-          </van-tab>
-        </van-tabs> -->
       </div>
   </div>
 </template>
 <script> 
+// import BScroll from 'better-scroll';//引进滚动插件
 export default {
   name: "MyWaybill",
   data() {
     return {
+      scroll:null,
       active:0,
       current:1,//当前页
       size:10,//每页记录数
-      curType:0,//当前显示待确认状态
+      curType:this.$store.state.waybillState || 0,//当前显示待确认状态
       pageInfo:{},
+      itemList:[],
       receivareaName:'',//收货地区
       expressRouter:{},//获取的物流地址
       loading: false,//列表加载
       finished: false//是否还有数据
     }
   },
+  watch: {
+    $route(to, from) {
+      console.log(from);
+      console.log(to);
+      if(to.path.indexOf('/waybillInfo')>=0){
+        this.$store.commit('refreshWaybillState',{waybillState: this.curType});
+        // this.curType = $store.state.waybillState;
+      }else{
+        let state = 0;
+        this.$store.commit('refreshWaybillState',{waybillState: state});
+      }
+    }
+  },
   created(){
+    // console.log('from,',from.path);
+    console.log('curType',this.curType);
+    this.changeQueryByState(this.curType);
+  },
+  mounted(){
+    // console.log(document.querySelector('.waybill_box'))
+    // this.scroll = new BScroll(document.querySelector('.waybill_box'),{
+    //   click: true,  // 元素可触发点击事件
+    //   scrollX: false,  // 横向可滑动，默认为false
+    //   scrollY: true,  // 纵向可滑动，默认为true
+    //   bounce: false  // 当滚动超过边缘的时候无回弹动画
+    // })
+    // console.log(this.scroll);
   },
   methods:{
     reset(){
-      console.log('重置数据接口')
+      // console.log('重置数据接口');
       let params ={};
       this.$post('/waybill/addWaybillTestData',params).then(data => {
         if(data.code === '0') {
@@ -217,20 +143,29 @@ export default {
     //查询列表
     queryPageInfo(state){
        let params = {
-         state:state
+         state:state,
+         current:this.current,//当前页
+         size:this.size//每页记录数
        };
       this.$post('/waybill/queryWaybillList',params).then(data => {
         if(data.code === '0') {
-            // 加载状态结束
-          this.loading = false;
           this.pageInfo = data;
-          // if(this.pageInfo.dataList && this.pageInfo.dataList.length>0){
-          //   this.pageInfo.dataList.some(item =>{
-          //     this.queryloadDicById(item.receivareaId);//查询收货地区名称
-          //     return true ;
-          //   })
-          // }
-          this.finished = true;
+          let rows = data.dataList; //请求返回当页的列表
+          this.loading = false;
+          this.pageInfo.total = data.total; //总数
+          if (rows == null || rows.length === 0) {
+            // 加载结束
+            this.finished = true;
+            return;
+          }
+          // 将新数据与老数据进行合并
+          this.itemList = this.itemList.concat(rows);
+        
+        //如果列表数据条数>=总条数，不再触发滚动加载
+          if (this.itemList.length >= this.pageInfo.total) {
+            this.finished = true;
+          }
+          // 如果加载完毕，显示没有更多了
         } else {
           if(data && data.msg){
               this.$toast.fail(data.msg);
@@ -238,17 +173,28 @@ export default {
         }
       })
     },
+    //onload事件
+    onLoad(state){
+      this.current++;
+      this.queryPageInfo(state);
+    },
     //切换代运单状态查询各列表
     changeQueryByState(state){
-      console.log(state);
+       // 将代运单状态保存到vuex中
+      this.$store.commit('refreshWaybillState',{waybillState: state});
+      console.log('waybillState,',this.$store.state.waybillState)
+      this.current = 1;//恢复第一页
+      this.itemList = [];//先清空
+      this.loading = true;//加载中
+      this.finished = false;//未结束
       this.queryPageInfo(state);
     },
     //去代运单详情
-    goWaybillDetail(id,type){
+    goWaybillDetail(id,curType){
       //去详情页传参id及代运单状态
       this.$router.push({
         name:'WaybillInfo',
-        params: {id:id,type:type}
+        params: {id:id,type:curType}
       });
     },
     //查看物流信息
@@ -266,7 +212,16 @@ export default {
               let reg = new RegExp(/{platform.waybillNumber}/,'g');//g代表全部
                //跳转到马来西亚的网址
               let newMsg = this.expressRouter.textCn.replace(reg,waybillNumber).replace('$','');
-              window.open(newMsg);
+              // window.open(newMsg);
+              // window.location.href = newMsg;
+              let open = window.open('about:blank');
+              if (open === null || typeof(open) === 'undefined') {
+                window.location.href = newMsg
+                return
+              }
+              setTimeout(() => {
+                open.location = newMsg
+              }, 300)
               console.log(newMsg);
             }
           }
@@ -299,7 +254,7 @@ export default {
       this.$post('/waybill/signWaybill',params).then(data => {
         if(data.code === '0') {
           this.$toast.success(this.$t('签收成功'));
-          this.queryPageInfo(this.curType);
+          this.changeQueryByState(this.curType);
         } else {
           if(data && data.msg){
               this.$toast.fail(data.msg);

@@ -49,7 +49,7 @@
             </div>
             <div  v-if="curType!=0">
               <span>{{$t('运输金额')}}:</span>
-              <font>RM{{pageInfo_waybill.amountRm}}</font>
+              <font v-if="pageInfo_waybill.amountRm">RM{{pageInfo_waybill.amountRm}}</font>
               <!-- <font>RM{{pageInfo_waybill.amountRmb}}</font> -->
             </div>
           </div>
@@ -93,14 +93,15 @@
         </van-button>
       </div>
       <!-- 快递单号list -->
-       <div class="waybillInfo_box">
-          <van-list
+       <div class="waybillInfo_box" v-if="pageInfo_express.total > 0">
+           <van-list
             v-model="loading"
             :finished="finished"
             :finished-text="$t('没有更多了')"
-            @load="queryPageList_express"
+            :immediate-check="false"
+            @load="onLoad"
           >
-            <div class="waybill_list waybillInfo_list"  v-for="item in pageInfo_express.dataList" :key="item.id">
+            <div class="waybill_list waybillInfo_list"  v-for="item in itemList" :key="item.id">
               <div class="waybill_title">
                 <span>{{$t('快递单号')}}:</span>
                 <font>{{item.expressnum}}</font>
@@ -150,6 +151,9 @@
               </div>
             </div>
           </van-list>
+        </div>
+        <div class="waybillInfo_box" v-if="pageInfo_express.total === 0">
+          <van-empty :description="$t('暂无数据')" />
         </div>
         <!-- 待确认0 -->
         <!-- 待确认的取消订单与待付款的取消订单接口一致 -->
@@ -216,8 +220,13 @@ export default {
     return {
       id:this.$route.params.id,
       curType:this.$route.params.type,
+      current:1,//当前页
+      size:10,//每页记录数
+      loading: false,
+      finished: false,
       pageInfo_waybill:{},//代运单详情
-      pageInfo_express:{},//快递单列表
+      pageInfo_express:{},//快递单
+      itemList:[],//快递单列表
       receivareaName:'',//收货地区名称
       transtypeName:'',//运输方式名称
       loading: false,//列表加载
@@ -228,6 +237,7 @@ export default {
     console.log('id',this.id)
     console.log('type',this.curType)
     this.queryInfo_waybill();//查询代运单详情
+    this.queryPageList_express();//查询快递单
   },
   methods:{
     //收货地区、根据Id返显地区
@@ -282,20 +292,49 @@ export default {
     queryPageList_express(){
        let params = {
          waybillId:this.id,
-         size:1000
+         current:this.current,
+         size:this.size,
        };
       this.$post('/expressbill/queryExpressbillList',params).then(data => {
         if(data.code === '0') {
             // 加载状态结束
           this.loading = false;
           this.pageInfo_express = data;
-          this.finished = true;
+          let rows = data.dataList; //请求返回当页的列表
+          this.loading = false;
+          this.pageInfo_express.total = data.total; //总数
+          if (rows == null || rows.length === 0) {
+            // 加载结束
+            this.finished = true;
+            return;
+          }
+          // 将新数据与老数据进行合并
+          this.itemList = this.itemList.concat(rows);
+        
+        //如果列表数据条数>=总条数，不再触发滚动加载
+          if (this.itemList.length >= this.pageInfo_express.total) {
+            this.finished = true;
+          }
+          // 如果加载完毕，显示没有更多了
         } else {
           if(data && data.msg){
               this.$toast.fail(data.msg);
            }
         }
       })
+    },
+    //加载快递单列表
+    onLoad(){
+      this.current++;
+      this.queryPageList_express();
+    },
+    //初始化快递单查询列表
+    initExpressList(){
+      this.current = 1;
+      this.itemList = [];//清空
+      this.loading = true;
+      this.finished = false;
+      this.queryPageList_express();
     },
     //添加快递单，跳转到快递单表单页
     addExpress(){
@@ -326,7 +365,7 @@ export default {
       this.$post('/expressbill/deleteExpressbillById', params).then(data => {
         if(data.code === '0') {
           this.$toast.success(this.$t('删除成功'));
-          this.queryPageList_express(this.curType);//查询快递单列表
+          this.initExpressList();//查询快递单列表
         } else {
           if(data && data.msg){
               this.$toast.fail(data.msg);
@@ -375,7 +414,6 @@ export default {
           this.$toast.success(this.$t('付款成功'));
           // this.queryInfo_waybill();
            this.$router.push('/myWaybill');
-          // this.queryPageList_express(this.curType);//查询快递单列表
         } else {
           if(data && data.msg){
               this.$toast.fail(data.msg);
@@ -405,8 +443,9 @@ export default {
       this.$post('/waybill/signWaybill', params).then(data => {
         if(data.code === '0') {
           this.$toast.success(this.$t('签收成功'));
-          this.$router.push('/myWaybill');
-          // this.queryPageList_express(this.curType);//查询快递单列表
+          this.$router.push({
+            name:"MyWaybill"
+          });
         } else {
           if(data && data.msg){
               this.$toast.fail(data.msg);

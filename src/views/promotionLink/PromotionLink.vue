@@ -36,7 +36,7 @@ export default {
   name: "PromotionLink",
   data() {
     return {
-      message:'http://58.87.127.217:8081/#/register?recoId=',//注册页的地址
+      message:'#/register?recoId=',//注册页的地址
       modifyInfo:{}
     }
   },
@@ -52,7 +52,7 @@ export default {
           if(data.code === '0') {
               this.modifyInfo = data.data;
               //注册页地址拼接
-              this.message = this.message + this.modifyInfo.userId;
+              this.message = this.$baseUrl+this.message + this.modifyInfo.userId;
           } else {
               if(data && data.msg){
                   this.$toast.fail(data.msg);

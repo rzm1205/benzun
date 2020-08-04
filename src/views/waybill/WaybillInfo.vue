@@ -1,160 +1,172 @@
 <template>
   <div class="main">
-    <div class="waybillInfo_main" :style="{'padding-bottom':((curType != '3'||curType != 3)?'3.73333rem':'1.06667rem')}" >
-      <div class="psd_title waybillInfo_header">
-        <!-- 0-待确认，1-待付款，2-已付款，3-运输中，4-已完成，5-已取消 -->
-        <div class="waybillInfo_name" :style="{'padding-top':(((curType != '0' || curType != 0 )&& (curType != '1' || curType != 1))?'0.22rem':'0.50667rem')}">
-           <h4 v-if="curType === '0' || curType === 0">{{$t('等待平台确认')}}</h4>
-           <h4 v-if="curType === '1' || curType === 1">{{$t('等待您付款')}}</h4>
-           <h4 v-if="curType === '2' || curType === 2">{{$t('运输中')}}</h4>
-           <h4 v-if="curType === '3' || curType === 3">{{$t('已完成')}}</h4>
-           <div class="waybillInfo_order">
-            <span>{{$t('订单号')}}:</span>
-            <font>{{pageInfo_waybill.orderNumber}}</font>
-          </div>
-          <div class="waybillInfo_waybill" v-if="(curType != 0 || curType != '0') && (curType != 1 || curType != '1')">
-            <span>{{$t('运单号')}}:</span>
-            <font>{{pageInfo_waybill.waybillNumber}}</font>
-          </div>
-        </div>
-        <div class="waybillInfo_shalou"  v-if="curType === '0' || curType === 0">
-          <img src="~/assets/images/main/shalou.png" alt="">
-        </div>
-         <div class="waybillInfo_shalou"  v-if="curType === 1 || curType === '1'">
-          <img src="~/assets/images/main/fukuan.png" alt="">
-        </div>
-        <div class="waybillInfo_yunshu"  v-if="curType === '2' || curType === 2">
-          <img src="~/assets/images/main/yunshu.png" alt="">
-        </div>
-        <div class="waybillInfo_complete" v-if="curType === '3' || curType === 3">
-          <img src="~/assets/images/main/complete.png" alt="">
-        </div>
-      </div>
-      <div class="receiverInfo">
-        <div class="receiver_header">
-          <div class="receiver_name">
-            <img src="~/assets/images/main/position.png" alt="">
-            <span>{{$t('收货人')}}:</span>
-            <font>{{pageInfo_waybill.addressee}}</font>
-          </div>
-          <div class="receiver_city">
-            {{receivareaName}}
-          </div>
-        </div>
-        <div class="receiver_detail">
-          <div class="receiver_mode">
-            <div>
-              <span>{{$t('联系电话')}}:</span>
-              <font>{{pageInfo_waybill.phone}}</font>
+    <!-- :style="{'padding-bottom':((curType != '3'||curType != 3)?'3.73333rem':'1.06667rem')}" -->
+    <!-- 因为底部的高度不一致，需要重新计算滚动高度 -->
+    <!-- 底部本身高度37px，在此基础上加这个值；
+    curType0,2  97px=2.58667rem，
+    curType1 142px= 3.78667rem，
+    curType3 37px = 1rem
+    curType = 0，底部多60px，curType = 1，底部多105px，curType = 2，底部多60px，curType = 3，底部没有fixed， -->
+    <!-- v-show="(curType == '1'||curType == 1) " -->
+    <div class="waybillInfo_main container" ref="container" 
+      :style="{height: getScrollHeightFn}"
+     >
+      <div class="content"  >
+        <div class="psd_title waybillInfo_header">
+          <!-- 0-待确认，1-待付款，2-已付款，3-运输中，4-已完成，5-已取消 -->
+          <div class="waybillInfo_name" :style="{'padding-top':(((curType != '0' || curType != 0 )&& (curType != '1' || curType != 1))?'0.22rem':'0.50667rem')}">
+            <h4 v-if="curType === '0' || curType === 0">{{$t('等待平台确认')}}</h4>
+            <h4 v-if="curType === '1' || curType === 1">{{$t('等待您付款')}}</h4>
+            <h4 v-if="curType === '2' || curType === 2">{{$t('运输中')}}</h4>
+            <h4 v-if="curType === '3' || curType === 3">{{$t('已完成')}}</h4>
+            <div class="waybillInfo_order">
+              <span>{{$t('订单号')}}:</span>
+              <font>{{pageInfo_waybill.orderNumber}}</font>
             </div>
-            <div  v-if="curType!=0">
-              <span>{{$t('运输金额')}}:</span>
-              <font v-if="pageInfo_waybill.amountRm">RM{{pageInfo_waybill.amountRm}}</font>
-              <!-- <font>RM{{pageInfo_waybill.amountRmb}}</font> -->
+            <div class="waybillInfo_waybill" v-if="(curType != 0 || curType != '0') && (curType != 1 || curType != '1')">
+              <span>{{$t('运单号')}}:</span>
+              <font>{{pageInfo_waybill.waybillNumber}}</font>
             </div>
           </div>
-          <div class="receiver_mode">
-            <div>
-              <span>{{$t('邮编')}}:</span>
-              <font>{{pageInfo_waybill.postcode}}</font>
+          <div class="waybillInfo_shalou"  v-if="curType === '0' || curType === 0">
+            <img src="~/assets/images/main/shalou.png" alt="">
+          </div>
+          <div class="waybillInfo_shalou"  v-if="curType === 1 || curType === '1'">
+            <img src="~/assets/images/main/fukuan.png" alt="">
+          </div>
+          <div class="waybillInfo_yunshu"  v-if="curType === '2' || curType === 2">
+            <img src="~/assets/images/main/yunshu.png" alt="">
+          </div>
+          <div class="waybillInfo_complete" v-if="curType === '3' || curType === 3">
+            <img src="~/assets/images/main/complete.png" alt="">
+          </div>
+        </div>
+        <div class="receiverInfo">
+          <div class="receiver_header">
+            <div class="receiver_name">
+              <img src="~/assets/images/main/position.png" alt="">
+              <span>{{$t('收货人')}}:</span>
+              <font>{{pageInfo_waybill.addressee}}</font>
             </div>
-            <div>
-              <span>{{$t('运输方式')}}:</span>
-              <font>{{transtypeName}}</font>
+            <div class="receiver_city">
+              {{receivareaName}}
             </div>
           </div>
-          <div class="receiver_address">
-            <div style="width:100%">
-              <span>{{$t('详细地址')}}:</span>
-              <font>{{pageInfo_waybill.detailedaddress}}</font>
+          <div class="receiver_detail">
+            <div class="receiver_mode">
+              <div>
+                <span>{{$t('联系电话')}}:</span>
+                <font>{{pageInfo_waybill.phone}}</font>
+              </div>
+              <div  v-if="curType!=0">
+                <span>{{$t('运输金额')}}:</span>
+                <font v-if="pageInfo_waybill.amountRm">RM{{pageInfo_waybill.amountRm}}</font>
+                <!-- <font>RM{{pageInfo_waybill.amountRmb}}</font> -->
+              </div>
             </div>
-          </div>
-          <div class="receiver_mode" v-if="curType===3 || curType==='3' ">
-            <div style="width:100%;">
-              <span>{{$t('创建时间')}}:</span>
-              <font>{{pageInfo_waybill.ctime}}</font>
+            <div class="receiver_mode">
+              <div>
+                <span>{{$t('邮编')}}:</span>
+                <font>{{pageInfo_waybill.postcode}}</font>
+              </div>
+              <div>
+                <span>{{$t('运输方式')}}:</span>
+                <font>{{transtypeName}}</font>
+              </div>
             </div>
-          </div>
-          <div class="receiver_mode" v-if="curType===3|| curType==='3'">
-            <div style="width:100%;">
-              <span>{{$t('完成时间')}}:</span>
-              <font>{{pageInfo_waybill.ftime}}</font>
+            <div class="receiver_address">
+              <div style="width:100%">
+                <span>{{$t('详细地址')}}:</span>
+                <font>{{pageInfo_waybill.detailedaddress}}</font>
+              </div>
+            </div>
+            <div class="receiver_mode" v-if="curType===3 || curType==='3' ">
+              <div style="width:100%;">
+                <span>{{$t('创建时间')}}:</span>
+                <font>{{pageInfo_waybill.ctime}}</font>
+              </div>
+            </div>
+            <div class="receiver_mode" v-if="curType===3|| curType==='3'">
+              <div style="width:100%;">
+                <span>{{$t('完成时间')}}:</span>
+                <font>{{pageInfo_waybill.ftime}}</font>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <!-- 添加快递单按钮 -->
-      <div class="form_sumit" v-if="curType===0 || curType==='0'">
-        <van-button round block type="info" class="validate_activeBtn" 
-        icon="plus" 
-        @click="addExpress"
-        >
-          {{$t('添加快递单')}}
-        </van-button>
-      </div>
-      <!-- 快递单号list -->
-       <div class="waybillInfo_box" v-if="pageInfo_express.total > 0">
-           <van-list
-            v-model="loading"
-            :finished="finished"
-            :finished-text="$t('没有更多了')"
-            :immediate-check="false"
-            @load="onLoad"
+        <!-- 添加快递单按钮 -->
+        <div class="form_sumit" v-show="curType===0 || curType==='0'">
+          <van-button round block type="info" class="validate_activeBtn" 
+          icon="plus" 
+          @click="addExpress"
           >
-            <div class="waybill_list waybillInfo_list"  v-for="item in itemList" :key="item.id">
-              <div class="waybill_title">
-                <span>{{$t('快递单号')}}:</span>
-                <font>{{item.expressnum}}</font>
-                <div class="waybillInfo_state" v-if="curType===0 || curType==='0' || curType===1 || curType==='1'">
-                  <img v-if="item.state === '0'"  src="~/assets/images/main/storage_wait.png" alt="">
-                  <img v-if="item.state === '1'"  src="~/assets/images/main/storage_already.png" alt="">
+            {{$t('添加快递单')}}
+          </van-button>
+        </div>
+        <!-- 快递单号list -->
+        <div class="waybillInfo_box" v-show="pageInfo_express.total > 0">
+            <van-list
+              v-model="loading"
+              :finished="finished"
+              :finished-text="$t('没有更多了')"
+              :immediate-check="false"
+              @load="onLoad"
+            >
+              <div class="waybill_list waybillInfo_list"  v-for="item in itemList" :key="item.id">
+                <div class="waybill_title">
+                  <span>{{$t('快递单号')}}:</span>
+                  <font>{{item.expressnum}}</font>
+                  <div class="waybillInfo_state" v-if="curType===0 || curType==='0' || curType===1 || curType==='1'">
+                    <img v-if="item.state === '0'"  src="~/assets/images/main/storage_wait.png" alt="">
+                    <img v-if="item.state === '1'"  src="~/assets/images/main/storage_already.png" alt="">
+                  </div>
+                </div>
+                <div class="receiver_detail waybillInfo_detail"  
+                :style="{'padding-bottom':(curType===0||curType==='0')?'0.64rem':'0.26667rem'}">
+                  <div class="receiver_mode expressInfo">
+                    <div>
+                      <span>{{$t('快递公司')}}:</span>
+                      <font>{{item.companyText}}</font>
+                    </div>
+                    <div>
+                      <span>{{$t('物品名称')}}:</span>
+                      <font>{{item.name}}</font>
+                    </div>
+                  </div>
+                  <div class="receiver_mode expressInfo">
+                    <div>
+                      <span>{{$t('物品数量')}}:</span>
+                      <font>{{item.num}}</font>
+                    </div>
+                    <!-- 状态是未入库时，不显示查看图片按钮和重量体积，状态是已入库时才显示 -->
+                    <div v-if="item.state === '1'">
+                      <span>
+                        <a href="javascript:void(0);"
+                          @click.stop="viewImagePreview(item.img)"
+                          class="active_img"
+                          >
+                          {{$t('查看图片')}}
+                        </a>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="receiver_mode expressInfo" >
+                    <div>
+                      <span>{{$t('重量体积')}}:</span>
+                      <font v-if="item.state === '1'">{{item.weightvolume}}</font>
+                    </div>
+                  </div>
+                  <div @click.stop="deleteExpressDialog(item.id)" class="express_deleteBtn"  v-if="curType===0 || curType==='0'">
+                    <span>{{$t('删除')}}</span>
+                  </div>
                 </div>
               </div>
-              <div class="receiver_detail waybillInfo_detail"  
-               :style="{'padding-bottom':(curType===0||curType==='0')?'0.64rem':'0.26667rem'}">
-                <div class="receiver_mode expressInfo">
-                  <div>
-                    <span>{{$t('快递公司')}}:</span>
-                    <font>{{item.companyText}}</font>
-                  </div>
-                  <div>
-                    <span>{{$t('物品名称')}}:</span>
-                    <font>{{item.name}}</font>
-                  </div>
-                </div>
-                <div class="receiver_mode expressInfo">
-                  <div>
-                    <span>{{$t('物品数量')}}:</span>
-                    <font>{{item.num}}</font>
-                  </div>
-                  <!-- 状态是未入库时，不显示查看图片按钮和重量体积，状态是已入库时才显示 -->
-                  <div v-if="item.state === '1'">
-                    <span>
-                      <a href="javascript:void(0);"
-                        @click.stop="viewImagePreview(item.img)"
-                        class="active_img"
-                        >
-                        {{$t('查看图片')}}
-                      </a>
-                     </span>
-                  </div>
-                </div>
-                 <div class="receiver_mode expressInfo" >
-                  <div>
-                    <span>{{$t('重量体积')}}:</span>
-                    <font v-if="item.state === '1'">{{item.weightvolume}}</font>
-                  </div>
-                </div>
-                <div @click.stop="deleteExpressDialog(item.id)" class="express_deleteBtn"  v-if="curType===0 || curType==='0'">
-                  <span>{{$t('删除')}}</span>
-                </div>
-              </div>
-            </div>
-          </van-list>
-        </div>
-        <div class="waybillInfo_box" v-if="pageInfo_express.total === 0">
-          <van-empty :description="$t('暂无数据')" />
-        </div>
+            </van-list>
+          </div>
+          <div class="waybillInfo_box" v-show="pageInfo_express.total === 0">
+            <van-empty :description="$t('暂无数据')" />
+          </div>
+      </div>
         <!-- 待确认0 -->
         <!-- 待确认的取消订单与待付款的取消订单接口一致 -->
         <div class="waybillInfo_pay" v-if="curType===0 || curType==='0'">
@@ -213,15 +225,18 @@
   </div>
 </template>
 <script>
+
+import BScroll from 'better-scroll';//引进滚动插件
 import {ImagePreview} from "vant";
 export default {
   name: "WaybillInfo",
   data() {
     return {
+      scroll:null,
       id:this.$route.params.id,
       curType:this.$route.params.type,
       current:1,//当前页
-      size:10,//每页记录数
+      size:1000,//每页记录数
       loading: false,
       finished: false,
       pageInfo_waybill:{},//代运单详情
@@ -233,13 +248,53 @@ export default {
       finished: false//是否还有数据
     }
   },
+  computed:{
+    getScrollHeightFn: function(){
+      let height = '';
+      // curType0,2  97px=2.58667rem，
+      // curType1 142px= 3.78667rem，
+      // curType3 37px = 1rem
+      // 在需要加120px； = 3.2rem
+      if(this.curType ===0 || this.curType === 2 ||this.curType ==='0' || this.curType === '2'){
+        height = 'calc(100% - 2.58667rem - 3rem)';
+      }else if(this.curType ===1 || this.curType ==='1'){
+        height = 'calc(100% - 3.78667rem - 3rem)';
+      }else if(this.curType ===3 || this.curType ==='3'){
+         height = 'calc(100% - 1rem - 3rem)';
+      }
+      return height; 
+    }
+  },
   created(){
-    console.log('id',this.id)
-    console.log('type',this.curType)
+    this.$nextTick(() => {
+      this.initScroll();
+        //这里放初始化函数，我还没写，后面补充
+    });
+    // console.log('id',this.id)
+    // console.log('type',this.curType)
     this.queryInfo_waybill();//查询代运单详情
     this.queryPageList_express();//查询快递单
   },
+  mounted(){
+    // console.log(document.querySelector('.container'))
+    this.initScroll();
+    // this.scroll = new BScroll(this.$refs.container,{
+    //   click: true,  // 元素可触发点击事件
+    //   scrollX: false,  // 横向可滑动，默认为false
+    //   scrollY: true,  // 纵向可滑动，默认为true
+    //   bounce: false  // 当滚动超过边缘的时候无回弹动画
+    // })
+    // console.log(this.scroll);
+  },
   methods:{
+    initScroll() {
+      this.scroll = new BScroll(this.$refs.container, {
+        click: true,
+        scrollX: false,  // 横向可滑动，默认为false
+        scrollY: true,  // 纵向可滑动，默认为true
+        bounce: false  // 当滚动超过边缘的时候无回弹动画
+      });
+    },
     //收货地区、根据Id返显地区
     queryloadDicById(id,type){
        let params = {

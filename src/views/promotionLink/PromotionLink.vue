@@ -36,12 +36,13 @@ export default {
   name: "PromotionLink",
   data() {
     return {
-      message:'#/register?recoId=',//注册页的地址
+      message:'?recoId=',//注册页的地址
       modifyInfo:{}
     }
   },
   created(){
     this.queryPageInfo();
+    // console.log(window.location.href);
   },
   methods:{
      //获取详情
@@ -52,7 +53,10 @@ export default {
           if(data.code === '0') {
               this.modifyInfo = data.data;
               //注册页地址拼接
-              this.message = this.$baseUrl+this.message + this.modifyInfo.userId;
+              let  href = window.location.href.replace('promotionLink','register');
+              // console.log(href);
+              this.message = href + this.message+ this.modifyInfo.userId;
+              //  console.log(this.message);
           } else {
               if(data && data.msg){
                   this.$toast.fail(data.msg);

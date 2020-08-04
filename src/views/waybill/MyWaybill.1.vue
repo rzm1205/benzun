@@ -12,52 +12,49 @@
             
             <!-- <div class="active_line" :style="{'transform': curType translateX(60px) translateX(-50%)}"></div> -->
         </div>
-        <div class="waybill_box container" ref="container">
-          <ul class="content">
-            <van-list
-              class="content"
-              v-model="loading"
-              :finished="finished"
-              :finished-text="$t('没有更多了')"
-              :immediate-check="false"
-              @load="onLoad(curType)"
-              v-if="pageInfo.total>0"
-            >
-              <li class="waybill_list"  v-for="item in itemList" :key="item.id" @click="goWaybillDetail(item.id,curType)">
-                  <div class="waybill_title">
-                    <span>{{$t('订单号')}}:</span>
-                    <font>{{item.orderNumber}}</font>
+        <div class="waybill_box">
+          <van-list
+            v-model="loading"
+            :finished="finished"
+            :finished-text="$t('没有更多了')"
+            :immediate-check="false"
+            @load="onLoad(curType)"
+            v-if="pageInfo.total>0"
+          >
+            <div class="waybill_list"  v-for="item in itemList" :key="item.id" @click="goWaybillDetail(item.id,curType)">
+              <div class="waybill_title">
+                <span>{{$t('订单号')}}:</span>
+                <font>{{item.orderNumber}}</font>
+              </div>
+              <div class="waybill_con">
+                <div class="waybill_process">
+                  <div class="waybill_start">
+                    <!-- 收件人 -->
+                    <span>{{item.addressee}}</span>
+                    <!-- 只有待付款状态1才显示 -->
+                    <span class="waybill_start_money" v-if=" (curType===1||curType==='1') && item.amountRm">
+                      RM 
+                      <font>{{item.amountRm}}</font>
+                    </span>
                   </div>
-                  <div class="waybill_con">
-                    <div class="waybill_process">
-                      <div class="waybill_start">
-                        <!-- 收件人 -->
-                        <span>{{item.addressee}}</span>
-                        <!-- 只有待付款状态1才显示 -->
-                        <span class="waybill_start_money" v-if=" (curType===1||curType==='1') && item.amountRm">
-                          RM 
-                          <font>{{item.amountRm}}</font>
-                        </span>
-                      </div>
-                      <div class="waybill_end">
-                        <!-- 收货地区根据Id返显地区 -->
-                        {{item.receivareaTextprefix}}·{{item.receivareaTextsuffix}}
-                      </div>
-                    </div>
-                    <div class="waybill_time">
-                      <span v-if="curType!=3">{{$t('下单时间')}}:</span>
-                      <font v-if="curType!=3">{{item.ctime}}</font>
-                      <span v-if="curType===3">{{$t('完成时间')}}:</span>
-                      <font v-if="curType===3">{{item.ftime}}</font>
-                    </div>
-                    <div class="waybill_view" v-if="curType===2">
-                      <span class="waybill_router" @click.stop="queryExpressRouter(item.waybillNumber)">{{$t('查看物流')}}</span>
-                      <span class="waybill_confirm" @click.stop="receiptDialog(item.id)">{{$t('确认签收')}}</span>
-                    </div>
+                  <div class="waybill_end">
+                    <!-- 收货地区根据Id返显地区 -->
+                    {{item.receivareaTextprefix}}·{{item.receivareaTextsuffix}}
                   </div>
-              </li>
-            </van-list>
-           </ul>
+                </div>
+                <div class="waybill_time">
+                  <span v-if="curType!=3">{{$t('下单时间')}}:</span>
+                  <font v-if="curType!=3">{{item.ctime}}</font>
+                  <span v-if="curType===3">{{$t('完成时间')}}:</span>
+                  <font v-if="curType===3">{{item.ftime}}</font>
+                </div>
+                <div class="waybill_view" v-if="curType===2">
+                  <span class="waybill_router" @click.stop="queryExpressRouter(item.waybillNumber)">{{$t('查看物流')}}</span>
+                  <span class="waybill_confirm" @click.stop="receiptDialog(item.id)">{{$t('确认签收')}}</span>
+                </div>
+              </div>
+            </div>
+          </van-list>
           <div v-if="pageInfo.total===0">
             <van-empty :description="$t('暂无数据')" />
           </div>
@@ -67,7 +64,6 @@
 </template>
 <script> 
 import BScroll from 'better-scroll';//引进滚动插件
-
 export default {
   name: "MyWaybill",
   data() {
@@ -75,7 +71,7 @@ export default {
       scroll:null,
       active:0,
       current:1,//当前页
-      size:1000,//每页记录数
+      size:10,//每页记录数
       curType:this.$store.state.waybillState || 0,//当前显示待确认状态
       pageInfo:{},
       itemList:[],
@@ -86,7 +82,6 @@ export default {
     }
   },
   watch: {
-    //监测路由
     $route(to, from) {
       console.log(from);
       console.log(to);
@@ -100,35 +95,21 @@ export default {
     }
   },
   created(){
-    this.$nextTick(() => {
-      this.initScroll();
-        //这里放初始化函数，我还没写，后面补充
-    });
     // console.log('from,',from.path);
     console.log('curType',this.curType);
     this.changeQueryByState(this.curType);
   },
   mounted(){
-    // console.log(document.querySelector('.container'))
-    this.initScroll();
-    // this.scroll = new BScroll(this.$refs.container,{
-    //   click: true,  // 元素可触发点击事件
-    //   scrollX: false,  // 横向可滑动，默认为false
-    //   scrollY: true,  // 纵向可滑动，默认为true
-    //   bounce: false  // 当滚动超过边缘的时候无回弹动画
-    // })
-    // console.log(this.scroll);
+    console.log(document.querySelector('.waybill_main'))
+    this.scroll = new BScroll(document.querySelector('.waybill_main'),{
+      click: true,  // 元素可触发点击事件
+      scrollX: false,  // 横向可滑动，默认为false
+      scrollY: true,  // 纵向可滑动，默认为true
+      bounce: false  // 当滚动超过边缘的时候无回弹动画
+    })
+    console.log(this.scroll);
   },
   methods:{
-    //initscroll方法
-    initScroll() {
-      this.scroll = new BScroll(this.$refs.container, {
-        click: true,
-        scrollX: false,  // 横向可滑动，默认为false
-        scrollY: true,  // 纵向可滑动，默认为true
-        bounce: false  // 当滚动超过边缘的时候无回弹动画
-      });
-    },
     reset(){
       // console.log('重置数据接口');
       let params ={};
@@ -199,19 +180,14 @@ export default {
     },
     //切换代运单状态查询各列表
     changeQueryByState(state){
-      // this.scroll.refresh();//刷新滚动条
-      this.$nextTick(() => {        // 重新调用refresh()方法，解决切换的时候高度问题不能滚动
-          this.scroll && this.scroll.refresh();
-      })
        // 将代运单状态保存到vuex中
       this.$store.commit('refreshWaybillState',{waybillState: state});
-      // console.log('waybillState,',this.$store.state.waybillState)
+      console.log('waybillState,',this.$store.state.waybillState)
       this.current = 1;//恢复第一页
       this.itemList = [];//先清空
       this.loading = true;//加载中
       this.finished = false;//未结束
       this.queryPageInfo(state);
-      
     },
     //去代运单详情
     goWaybillDetail(id,curType){

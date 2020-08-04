@@ -1,44 +1,48 @@
 <template>
-  <div class="main">
-    <div class="search_notice">
-      <van-search 
-        v-model="value" 
-        :placeholder="$t('请输入您要搜索的关键字')" 
-        @search="onSearch"
-      >
-        <template #left-icon>
-          <img src="~/assets/images/main/search.png" alt="">
-        </template>
-      </van-search>
-    </div>
-    <div class="notice_box">
-      <van-list
-        v-model="loading"
-        :finished="finished"
-        :finished-text="$t('没有更多了')"
-        :immediate-check="false"
-        @load="onLoad"
-        v-if="pageInfo.total>0"
-      >
-        <van-cell class="notice_list"  v-for="item in itemList" :key="item.id" :to="'/noticeInfo/'+item.id">
-          <div class="notice_title">{{item.title}}</div>
-          <div class="notice_time">{{item.ctime}}</div>
-        </van-cell>
-      </van-list>
-      <div class="main_notice" v-if="pageInfo.total ===0">
-        <van-empty :description="$t('暂无数据')" />
+  <div class="main container" ref="container">
+    <div class="content">
+      <div class="search_notice">
+        <van-search 
+          v-model="value" 
+          :placeholder="$t('请输入您要搜索的关键字')" 
+          @search="onSearch"
+        >
+          <template #left-icon>
+            <img src="~/assets/images/main/search.png" alt="">
+          </template>
+        </van-search>
+      </div>
+      <div class="notice_box">
+        <van-list
+          v-model="loading"
+          :finished="finished"
+          :finished-text="$t('没有更多了')"
+          :immediate-check="false"
+          @load="onLoad"
+          v-show="pageInfo.total>0"
+        >
+          <van-cell class="notice_list"  v-for="item in itemList" :key="item.id" :to="'/noticeInfo/'+item.id">
+            <div class="notice_title">{{item.title}}</div>
+            <div class="notice_time">{{item.ctime}}</div>
+          </van-cell>
+        </van-list>
+        <div class="main_notice" v-if="pageInfo.total ===0">
+          <van-empty :description="$t('暂无数据')" />
+        </div>
       </div>
     </div>
   </div>
 </template>
 <script>
+import BScroll from 'better-scroll';//引进滚动插件
 export default {
   name: "Notice",
   data() {
     return {
-      value:'',
+      scroll:null,
+      value:'',//搜索
       current:1,//当前页,默认1
-      size:10,//每页记录数，默认10
+      size:1000,//每页记录数，默认10
       pageInfo:{
         dataList:[]
       },
@@ -48,9 +52,33 @@ export default {
     }
   },
   created(){
+    this.$nextTick(() => {
+      this.initScroll();
+        //这里放初始化函数，我还没写，后面补充
+    });
     this.queryPageInfo();
   },
+  mounted(){
+    // console.log(document.querySelector('.container'))
+    this.initScroll();
+    // this.scroll = new BScroll(this.$refs.container,{
+    //   click: true,  // 元素可触发点击事件
+    //   scrollX: false,  // 横向可滑动，默认为false
+    //   scrollY: true,  // 纵向可滑动，默认为true
+    //   bounce: false  // 当滚动超过边缘的时候无回弹动画
+    // })
+    // console.log(this.scroll);
+  },
   methods:{
+    //initscroll方法
+    initScroll() {
+      this.scroll = new BScroll(this.$refs.container, {
+        click: true,
+        scrollX: false,  // 横向可滑动，默认为false
+        scrollY: true,  // 纵向可滑动，默认为true
+        bounce: false  // 当滚动超过边缘的时候无回弹动画
+      });
+    },
     //搜索框方法
     onSearch(val) {
       console.log(val);
@@ -101,4 +129,10 @@ export default {
 }
 </script>
 <style scoped>
+.main{
+  width: 100%;
+  height: calc(100% - 46px);
+  overflow: hidden;
+  /* padding-bottom: 40px; */
+}
 </style>

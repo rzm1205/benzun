@@ -1,64 +1,68 @@
 <template>
-  <div class="main">
-      <div class="wallet_top">
-        <div class="wallet_bg">
-            <div class="wallet_title_left">
-              <div class="wallet_name">
-                <span>{{$t('用户名称')}}:</span>
-                <font>{{name}}</font>
-              </div>
-              <div class="wallet_money">
-                <span>{{$t('钱包余额')}}:</span>
-                <font v-if="amount">RM {{amount}}</font>
-              </div>
-            </div>
-            <div class="wallet_title_right">
-              {{getNameFn}}
-              <!-- <img src="~/assets/images/profile/user.png" alt=""> -->
-            </div>
-        </div>
-      </div>
-      <div class="wallet_main">
-        <h4 v-if="pageInfo.total>0">{{$t('消费记录')}}</h4>
-        <div class="wallet_record"  >
-           <van-list
-              v-model="loading"
-              :finished="finished"
-              :finished-text="$t('没有更多了')"
-              :immediate-check="false"
-              @load="onLoad"
-              v-if="pageInfo.total>0"
-            >
-            <div class="wallet_list"  v-for="item in itemList" :key="item.id" >
-              <div class="wallet_order">
-                  <div class="record_name">
-                    <!-- <span>{{$t('订单号')}}:</span> -->
-                    <font style="margin-left:0;">{{item.con}}</font>
-                  </div>
-                  <div class="record_money">
-                    RM{{item.amount}}
-                  </div>
+  <div class="main container" ref="container">
+    <div class="content">
+        <div class="wallet_top">
+          <div class="wallet_bg">
+              <div class="wallet_title_left">
+                <div class="wallet_name">
+                  <span>{{$t('用户名称')}}:</span>
+                  <font>{{name}}</font>
                 </div>
-                <div class="record_time">
-                  <span>{{$t('消费时间')}}:</span>
-                  <font>{{item.ctime}}</font>
+                <div class="wallet_money">
+                  <span>{{$t('钱包余额')}}:</span>
+                  <font v-if="amount">RM {{amount}}</font>
                 </div>
               </div>
-            </van-list>
-           <div v-if="pageInfo.total === 0">
-            <van-empty :description="$t('暂无数据')" />
+              <div class="wallet_title_right">
+                {{getNameFn}}
+                <!-- <img src="~/assets/images/profile/user.png" alt=""> -->
+              </div>
           </div>
         </div>
+        <div class="wallet_main">
+          <h4 v-show="pageInfo.total>0">{{$t('消费记录')}}</h4>
+          <div class="wallet_record"  >
+            <van-list
+                v-model="loading"
+                :finished="finished"
+                :finished-text="$t('没有更多了')"
+                :immediate-check="false"
+                @load="onLoad"
+                v-show="pageInfo.total>0"
+              >
+              <div class="wallet_list"  v-for="item in itemList" :key="item.id" >
+                <div class="wallet_order">
+                    <div class="record_name">
+                      <!-- <span>{{$t('订单号')}}:</span> -->
+                      <font style="margin-left:0;">{{item.con}}</font>
+                    </div>
+                    <div class="record_money">
+                      RM {{item.amount}}
+                    </div>
+                  </div>
+                  <div class="record_time">
+                    <span>{{$t('消费时间')}}:</span>
+                    <font>{{item.ctime}}</font>
+                  </div>
+                </div>
+              </van-list>
+            <div v-show="pageInfo.total === 0">
+              <van-empty :description="$t('暂无数据')" />
+            </div>
+          </div>
+      </div>
     </div>
   </div>
 </template>
 <script>
+import BScroll from 'better-scroll';//引进滚动插件
 export default {
   name: "MyWallet",
   data() {
     return {
+      scroll:null,
       current:1,//当前页
-      size:10,//每页记录数
+      size:1000,//每页记录数
       pageInfo:{},
       loading: false,
       finished: false,
@@ -78,10 +82,34 @@ export default {
     }
   },
   created(){
+    this.$nextTick(() => {
+      this.initScroll();
+        //这里放初始化函数，我还没写，后面补充
+    });
     this.queryAmountInfo();//查询余额
     this.queryPageInfo();//查记录
   },
+  mounted(){
+    // console.log(document.querySelector('.container'))
+    this.initScroll();
+    // this.scroll = new BScroll(this.$refs.container,{
+    //   click: true,  // 元素可触发点击事件
+    //   scrollX: false,  // 横向可滑动，默认为false
+    //   scrollY: true,  // 纵向可滑动，默认为true
+    //   bounce: false  // 当滚动超过边缘的时候无回弹动画
+    // })
+    // console.log(this.scroll);
+  },
   methods:{
+     //initscroll方法
+    initScroll() {
+      this.scroll = new BScroll(this.$refs.container, {
+        click: true,
+        scrollX: false,  // 横向可滑动，默认为false
+        scrollY: true,  // 纵向可滑动，默认为true
+        bounce: false  // 当滚动超过边缘的时候无回弹动画
+      });
+    },
     // 查询余额
     queryAmountInfo() {
         let params = {}
@@ -136,11 +164,12 @@ export default {
 }
 </script>
 <style scoped>
+/* 因为有背景图betterScroll 暂时获取不到高度所以为146px */
 .main{
   width: 100%;
-  height: calc(100% - 46px);
+  height: calc(100% - 146px);
   overflow: hidden;
-  overflow-y: auto;
+  /* overflow-y: auto; */
   /* padding-bottom: 40px; */
 }
 </style>

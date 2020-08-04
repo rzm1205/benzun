@@ -430,7 +430,7 @@ input:-ms-input-placeholder {
   margin-top: 9px;
   overflow: hidden;
   overflow-y: auto;
-  padding-bottom: 100px;
+  padding-bottom: 150px;
 }
 .notice_list{
   padding: 11px 15px;
@@ -659,7 +659,6 @@ input:-ms-input-placeholder {
   justify-content: center;
   position: fixed;
   left: 0;
-  z-index: 9;
 }
 .waybill_tab div{
   text-align: center;
@@ -693,12 +692,8 @@ input:-ms-input-placeholder {
 } */
 .waybill_box{
   width: 100%;
-  height: 100%;
-  height: calc(100% - 145px);
-  /* overflow: hidden; */
   padding: 0 15px;
   padding-top: 45px;
-  margin-top: 55px;
 }
 .waybill_list{
   background: #ffffff;
@@ -795,10 +790,9 @@ input:-ms-input-placeholder {
 .waybillInfo_main{
   width: 100%;
   height: 100%;
-  height: calc(100% - 37px);
-  /* padding-bottom: 40px; */
+  padding-bottom: 40px;
   overflow: hidden;
-  /* overflow-y: auto; */
+  overflow-y: auto;
 }
 .waybillInfo_main .waybillInfo_header{
   display: flex;
@@ -1081,10 +1075,10 @@ input:-ms-input-placeholder {
 /* 创建代运单页 */
 .addWaybillInfo_main{
   width: 100%;
-  height: calc(100% - 97px);
-  /* padding-bottom: 300px; */
+  height: 100%;
+  padding-bottom: 300px;
   overflow: hidden;
-  /* overflow-y:auto;  */
+  overflow-y:auto; 
 }
 .addWaybillInfo_main .form_sumit.addExpress{
   margin: 10px 65px;

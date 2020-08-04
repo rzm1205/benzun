@@ -9,7 +9,7 @@ export default new Vuex.Store({
     token: localStorage.getItem('token') ? localStorage.getItem('token') : '',
     username:localStorage.getItem('username') ? localStorage.getItem('username') : '',//用户名
     name:localStorage.getItem('name') ? localStorage.getItem('name') : '',//昵称
-    waybillState:'',
+    waybillState:0,//待确认
   },
   mutations: {
     // 修改token，menuList,并将token、menuList存入localStorage

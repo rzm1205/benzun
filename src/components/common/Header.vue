@@ -146,7 +146,7 @@ export default {
         //   this.$store.commit('refreshWaybillState',{waybillState: state});
         // }
         this.title = this.$t(this.$route.meta.title);
-        console.log('title',this.title);
+        // console.log('title',this.title);
         //关闭popup弹框，当路由切换时关闭
         this.popupShow = false;
       }

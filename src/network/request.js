@@ -30,12 +30,14 @@ export function request(config) {
   instance.interceptors.request.use(config => {
     //拦截后需要将拦截下来的请求数据返回发送
     let token = localStorage.getItem('token');
-    let langType = localStorage.getItem('langType');
     if (token) { // 每次发送请求之前判断是否存在token，如果存在，则统一在http请求的header都加上token，不用每次请求都手动添加了
       config.headers['token'] = token;
       // 每个请求接口都需要往formData上，加_token
     //  config.data._token_iben = token
     }
+    // let langType = localStorage.getItem('langType');
+    // 现在不用获取localStorage的langType，现在是手动更改传en还是cn
+    let langType = 'en';
     if(langType){
       if(langType === 'en'){
         langType = 'my';//赋值转换马来西亚文
@@ -50,12 +52,11 @@ export function request(config) {
 
   // 响应拦截器
   instance.interceptors.response.use(res => {
-    // console.log(res)
     // 拦截后需要将拦截下来处理成的结果返回
-    // console.log(res)
-    //登录超时
+    console.log(res);
+    //登录超时，请重新登录
     if(res.data && res.data.code==='2'){
-      Toast.fail('登录超时，请重新登录!');
+      Toast.fail(res.data.msg);
       router.push('/login');
     }
     return res.data

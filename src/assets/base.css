@@ -172,6 +172,9 @@ input:-ms-input-placeholder {
 .van-dialog__confirm:active{
   color: #F68F21;
 }
+.van-toast{
+  width: 130px;
+}
 /* .waybill_main .van-tab{
   font-size:15px;
   font-family:PingFangSC-Regular,PingFang SC;
@@ -425,12 +428,12 @@ input:-ms-input-placeholder {
 }
 .notice_box{
   width: 100%;
-  height: 100%;
+  height: auto;
   background: #ffffff;
   margin-top: 9px;
-  overflow: hidden;
-  overflow-y: auto;
-  padding-bottom: 100px;
+  /* overflow: hidden;
+  overflow-y: auto; */
+  /* padding-bottom: 100px; */
 }
 .notice_list{
   padding: 11px 15px;
@@ -640,11 +643,11 @@ input:-ms-input-placeholder {
 /* 我的代运单页待付款、运输中、已完成 */
 .waybill_main{
   width: 100%;
-  height: 100%;
-  /* height: calc(100% - 140px); */
+  /* height: 100%; */
+  height: calc(100% - 38px);
   overflow: hidden;
   /* overflow-y: auto; */
-  padding-bottom: 50px;
+  /* padding-bottom: 50px; */
 }
 .waybill_main .waybill_tab{
   width: 100%;
@@ -694,11 +697,14 @@ input:-ms-input-placeholder {
 .waybill_box{
   width: 100%;
   height: 100%;
-  height: calc(100% - 145px);
+  height: calc(100% - 45px);
   /* overflow: hidden; */
   padding: 0 15px;
-  padding-top: 45px;
+  /* padding-top: 45px; */
   margin-top: 55px;
+}
+.waybill_box .content{
+  padding-bottom: 70px;
 }
 .waybill_list{
   background: #ffffff;
@@ -795,10 +801,13 @@ input:-ms-input-placeholder {
 .waybillInfo_main{
   width: 100%;
   height: 100%;
-  height: calc(100% - 37px);
+  height: calc(100% - 38px);
   /* padding-bottom: 40px; */
   overflow: hidden;
   /* overflow-y: auto; */
+}
+.waybillInfo_main .content{
+  padding-bottom: 120px;
 }
 .waybillInfo_main .waybillInfo_header{
   display: flex;
@@ -1084,7 +1093,7 @@ input:-ms-input-placeholder {
   height: calc(100% - 97px);
   /* padding-bottom: 300px; */
   overflow: hidden;
-  /* overflow-y:auto;  */
+  overflow-y:auto; 
 }
 .addWaybillInfo_main .form_sumit.addExpress{
   margin: 10px 65px;

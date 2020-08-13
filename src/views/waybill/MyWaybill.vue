@@ -51,7 +51,12 @@
                       <font v-if="curType===3">{{item.ftime}}</font>
                     </div>
                     <div class="waybill_view" v-if="curType===2">
-                      <span class="waybill_router" @click.stop="queryExpressRouter(item.waybillNumber)">{{$t('查看物流')}}</span>
+                      <span class="waybill_router" v-show="item.waybillNumber" 
+                        v-clipboard:copy="item.waybillNumber"
+                        v-clipboard:success="onCopy"
+                        @click.stop="queryExpressRouter(item.url)">
+                        {{$t('查看物流')}}
+                      </span>
                       <span class="waybill_confirm" @click.stop="receiptDialog(item.id)">{{$t('确认签收')}}</span>
                     </div>
                   </div>
@@ -151,7 +156,7 @@ export default {
         if(data.code === '0') {
           this.receivareaName = data.data.text;
           //将获取到的收货地区，
-          console.log(this.receivareaName)
+          // console.log(this.receivareaName)
         } else {
           if(data && data.msg){
               this.$toast.fail(data.msg);
@@ -221,40 +226,83 @@ export default {
         params: {id:id,type:curType}
       });
     },
+    //复制方法
+    onCopy: function (e) {
+      //  this.$toast.success(this.$t('复制成功'));
+       console.log('复制的内容：',e.text);
+    },
+    onError: function (e) {
+      this.$toast.success('Failed to copy texts');
+    },
     //查看物流信息
-    queryExpressRouter(waybillNumber){
-      console.log('waybillNumber',waybillNumber);
-      let params = {
-         sign:'queryWaybillURL'
-       };
-      this.$post('/dic/queryDics',params).then(data => {
-        if(data.code === '0') {
-          //获取的物流地址
-          if(data.dataList && data.dataList.length>0){
-            this.expressRouter = data.dataList[0];
-            if(this.expressRouter.textCn){
-              let reg = new RegExp(/{platform.waybillNumber}/,'g');//g代表全部
-               //跳转到马来西亚的网址
-              let newMsg = this.expressRouter.textCn.replace(reg,waybillNumber).replace('$','');
-              // window.open(newMsg);
-              // window.location.href = newMsg;
-              let open = window.open('about:blank');
-              if (open === null || typeof(open) === 'undefined') {
-                window.location.href = newMsg
-                return
-              }
-              setTimeout(() => {
-                open.location = newMsg
-              }, 300)
-              console.log(newMsg);
-            }
-          }
+    queryExpressRouter(url){
+      let toast = this.$toast.loading({
+        duration: 0, // 持续展示 toast
+        forbidClick: true,
+        message: '运单号复制成功，\n即将在 3 秒后打开物流网站',
+      });
+      let second = 3;
+      let timer = null;
+      clearInterval(timer);
+      timer = setInterval(() => {
+        second--;
+        if (second) {
+          toast.message = `运单号复制成功，\n即将在 ${second} 秒后打开物流网站`;
         } else {
-          if(data && data.msg){
-              this.$toast.fail(data.msg);
-           }
+          clearInterval(timer);
+          // 手动清除 Toast
+          this.$toast.clear();
         }
-      })
+        console.log(second);
+        if(second === 0){
+            // 直接打开国外的网站
+            // url = 'https://www.iconfont.cn/';
+            let newMsg = url;
+            // window.open(newMsg);
+            // window.location.href = newMsg;
+            let open = window.open('about:blank');
+            if (open === null || typeof(open) === 'undefined') {
+              window.location.href = newMsg;
+              return;
+            }
+            setTimeout(() => {
+              open.location = newMsg;
+            }, 300);
+            console.log(newMsg);
+          }
+      }, 1000);
+      // console.log('waybillNumber',waybillNumber);
+      // let params = {
+      //    sign:'queryWaybillURL'
+      //  };
+      // this.$post('/dic/queryDics',params).then(data => {
+      //   if(data.code === '0') {
+      //     //获取的物流地址
+      //     if(data.dataList && data.dataList.length>0){
+      //       this.expressRouter = data.dataList[0];
+      //       if(this.expressRouter.textCn){
+      //         let reg = new RegExp(/{platform.waybillNumber}/,'g');//g代表全部
+      //          //跳转到马来西亚的网址
+      //         let newMsg = this.expressRouter.textCn.replace(reg,waybillNumber).replace('$','');
+      //         // window.open(newMsg);
+      //         // window.location.href = newMsg;
+      //         let open = window.open('about:blank');
+      //         if (open === null || typeof(open) === 'undefined') {
+      //           window.location.href = newMsg
+      //           return
+      //         }
+      //         setTimeout(() => {
+      //           open.location = newMsg
+      //         }, 300)
+      //         console.log(newMsg);
+      //       }
+      //     }
+      //   } else {
+      //     if(data && data.msg){
+      //         this.$toast.fail(data.msg);
+      //      }
+      //   }
+      // })
     },
     //签收确认框
     receiptDialog(id) {

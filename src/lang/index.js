@@ -36,8 +36,10 @@ const messages = {
 // const localLang = (navLang === 'zh-CN'?'cn':'') || navLang === 'en' ? navLang : false;
 // console.log(localLang)//zh-CN
 //  const lang = window.localStorage.getItem('lang') || localLang || 'en';
-
- const lang = window.localStorage.getItem('langType') || 'cn';
+//切换语言
+//  const lang = window.localStorage.getItem('langType') || 'en';
+// 现在不用获取localStorage的langType，现在是手动更改传en还是cn
+ const lang = 'en';
  
 
 // 更新vant组件库本身的语言变化，支持国际化

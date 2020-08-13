@@ -131,8 +131,11 @@ export default {
 <style scoped>
 .main{
   width: 100%;
-  height: calc(100% - 46px);
+  height: calc(100% - 38px);
   overflow: hidden;
   /* padding-bottom: 40px; */
+}
+.main .content{
+  padding-bottom: 110px;
 }
 </style>

@@ -35,7 +35,7 @@
               :placeholder="$t('请输入')"
               :rules="[{ required: true, message: $t('请输入联系电话')},{ pattern: /^1[3456789]\d{9}$/, message: $t('手机号码格式错误')}]"
             />
-            <van-field
+            <!-- <van-field
               readonly
               required
               clickable
@@ -47,9 +47,9 @@
               :label="$t('运输方式')"
               :placeholder="$t('请选择')"
               @click="showTranstypeDialog = true"
-            />
+            /> -->
             <!-- 运输方式列表弹出层 -->
-            <van-popup 
+            <!-- <van-popup 
               v-model="showTranstypeDialog"
               round 
               position="bottom">
@@ -62,7 +62,7 @@
                 @cancel="showTranstypeDialog = false"
                 @confirm="confirmyDicsMethod_transtype"
               />
-            </van-popup>
+            </van-popup> -->
             <van-field
               readonly
               required
@@ -358,7 +358,7 @@ export default {
   },
   created(){
     this.queryAddressList();//常用地址查询
-    this.queryDicsList('transtype');//查询运输方式
+    // this.queryDicsList('transtype');//查询运输方式
     this.queryDicsList('receivarea');//查询收货地区
     this.queryDicsList('company');//查询运输公司
   },
@@ -493,14 +493,14 @@ export default {
     },
     //确认下单---代运单
     onSubmitWaybill() {
-      if( this.transTypeInfo.id === undefined ||  this.transTypeInfo.id===''){
-        this.$toast.fail('请选择运输方式');
-        return;
-      }
+      // if( this.transTypeInfo.id === undefined ||  this.transTypeInfo.id===''){
+      //   this.$toast.fail('请选择运输方式');
+      //   return;
+      // }
       let params = {
         addressee:this.addressee,//收件人
         phone:this.phone,
-        transtypeId:this.transTypeInfo.id,//运输方式
+        // transtypeId:this.transTypeInfo.id,//运输方式
         receivareaId:this.receivareaInfo.id,//收货地区
         detailedaddress:this.detailedaddress,//详细地址
         postcode:this.postcode,//邮编

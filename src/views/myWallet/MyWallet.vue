@@ -167,9 +167,12 @@ export default {
 /* 因为有背景图betterScroll 暂时获取不到高度所以为146px */
 .main{
   width: 100%;
-  height: calc(100% - 146px);
+  height: calc(100% - 38px);
   overflow: hidden;
   /* overflow-y: auto; */
   /* padding-bottom: 40px; */
+}
+.main .content{
+  padding-bottom: 120px;
 }
 </style>

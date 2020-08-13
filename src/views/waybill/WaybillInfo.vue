@@ -11,7 +11,7 @@
     <div class="waybillInfo_main container" ref="container" 
       :style="{height: getScrollHeightFn}"
      >
-      <div class="content"  >
+      <div class="content">
         <div class="psd_title waybillInfo_header">
           <!-- 0-待确认，1-待付款，2-已付款，3-运输中，4-已完成，5-已取消 -->
           <div class="waybillInfo_name" :style="{'padding-top':(((curType != '0' || curType != 0 )&& (curType != '1' || curType != 1))?'0.22rem':'0.50667rem')}">
@@ -256,11 +256,11 @@ export default {
       // curType3 37px = 1rem
       // 在需要加120px； = 3.2rem
       if(this.curType ===0 || this.curType === 2 ||this.curType ==='0' || this.curType === '2'){
-        height = 'calc(100% - 2.58667rem - 3rem)';
+        height = 'calc(100% - 2.58667rem )';
       }else if(this.curType ===1 || this.curType ==='1'){
-        height = 'calc(100% - 3.78667rem - 3rem)';
+        height = 'calc(100% - 3.78667rem )';
       }else if(this.curType ===3 || this.curType ==='3'){
-         height = 'calc(100% - 1rem - 3rem)';
+         height = 'calc(100% - 1rem )';
       }
       return height; 
     }

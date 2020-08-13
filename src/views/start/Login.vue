@@ -66,7 +66,8 @@ export default {
       vantLocales(this.lang);
       this.$i18n.locale = this.lang;
       console.log('此时此刻语言',this.$i18n.locale);
-       window.localStorage.setItem("langType", this.lang);
+      //如果切换用显示这个 
+      //  window.localStorage.setItem("langType", this.lang);
     },
     //登录校验不通过
     onFailed(errorInfo){

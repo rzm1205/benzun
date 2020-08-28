@@ -51,9 +51,7 @@
                 :placeholder="$t('请输入手机号')"
                 @blur="checkIsStoreDataBase('phone')"
                 :error-message="errMsg_phone" 
-                :rules="[{ required: true, message: this.$t('请输入手机号')},
-                { pattern: /^1[3456789]\d{9}$/, message: this.$t('手机号码格式错误')}
-                ]"
+                :rules="[{ required: true, message: this.$t('请输入手机号')}]"
               />
               <van-field
                 v-model="email"

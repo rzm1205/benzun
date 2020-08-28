@@ -33,7 +33,7 @@
               type="tel"
               :label="$t('联系电话')"
               :placeholder="$t('请输入')"
-              :rules="[{ required: true, message: $t('请输入联系电话')},{ pattern: /^1[3456789]\d{9}$/, message: $t('手机号码格式错误')}]"
+              :rules="[{ required: true, message: $t('请输入联系电话')}]"
             />
             <!-- <van-field
               readonly

@@ -39,7 +39,7 @@ const messages = {
 //切换语言
 //  const lang = window.localStorage.getItem('langType') || 'en';
 // 现在不用获取localStorage的langType，现在是手动更改传en还是cn
- const lang = 'en';
+ const lang = 'cn';
  
 
 // 更新vant组件库本身的语言变化，支持国际化

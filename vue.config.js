@@ -41,14 +41,14 @@ module.exports = {
       lintOnSave: false, // eslint 不限制
       devServer: {
         open: true, //是否自动弹出浏览器页面
-        host: "192.168.1.96", //192.168.1.8
+        host: "192.168.1.8", //192.168.1.96
         port: '8085',
         https: false,
         hotOnly: false, 
         proxy: {
             '/api': {
-                target: 'http://47.254.235.22:8081', //API服务器的地址，正式
-                // target: 'http://58.87.127.217:8081', //API服务器的地址，测试
+                // target: 'http://47.254.235.22:8081', //API服务器的地址，正式
+                target: 'http://58.87.127.217:8081', //API服务器的地址，测试
                 ws: true,  //代理websockets
                 changeOrigin: true, // 虚拟的站点需要更管origin
                 pathRewrite: {   //重写路径 比如'/api/aaa/ccc'重写为'/aaa/ccc'

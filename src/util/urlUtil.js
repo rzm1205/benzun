@@ -1,7 +1,7 @@
 // 公司本地
 // export const baseUrl = 'http://192.168.1.96:8085/api/';
 //家里本地
-export const baseUrl = 'http://192.168.1.8:8085/api/';
+export const baseUrl = 'http://192.168.1.72:8085/api/';
 
 // 线上环境
 // export const baseUrl = 'http://47.254.235.22:8081';
